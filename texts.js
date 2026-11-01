@@ -21,8 +21,8 @@ window.TEXTS = {
   hero_btn_download: "Download ElectroPy",
   hero_btn_explore: "Explore features",
   hero_badge_os: "Windows desktop application",
-  hero_badge_lang_1: "English /",
-  hero_badge_lang_2: "فارسی",
+  hero_badge_lang_1: "En /",
+  hero_badge_lang_2: "Ku",
 
   features_eyebrow: "01 — WHY ELECTROPY",
   features_title: "From target value to component combination.",
@@ -38,7 +38,7 @@ window.TEXTS = {
   feature_3_num: "03",
   feature_3_title: "A flexible desktop toolkit",
   feature_3_desc_line1: "Use focused extensions in a bilingual",
-  feature_3_desc_line2: "English and Persian interface.",
+  feature_3_desc_line2: "English interface.",
 
   about_eyebrow: "02 — ARCHITECTURE",
   about_title: "One launcher. Specialized electronics tools.",
@@ -74,18 +74,18 @@ window.TEXTS = {
   download_card_title: "ElectroPy for Windows",
   download_card_meta: "Windows • Desktop electronics software",
   download_card_btn: "Download",
-  download_footer: "Open extensions from the hamburger menu • EN / فارسی",
+  download_footer: "Open extensions from the hamburger menu • EN / KU",
 
   footer_brand: "ElectroPy",
   footer_team: "PAforge Development Team",
   footer_nav_home: "Home",
   footer_nav_features: "Features",
   footer_nav_download: "Download",
-  footer_nav_lang: "EN / FA",
+  footer_nav_lang: "EN / KU",
   footer_tagline: "ELECTROPY — ELECTRONICS DESIGN & COMPONENT SELECTION SOFTWARE",
   footer_copyright: "© PAforge. 2026 All rights reserved.",
 
   toast_downloading: "Starting download...",
-  toast_lang: "Persian UI is available inside the app.",
+  toast_lang: "Kurdish UI will be available inside the app.",
   toast_visit_github: "Opening GitHub repository..."
 };
