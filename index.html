@@ -1,2012 +1,493 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-<meta name="google-site-verification" content="y4TLE__KYcweNOFC9bByHxNJOLmzyhSzI86XXsCqPfM" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title data-text="page_title">ElectroPy — Desktop Electronics Toolkit</title>
-
-<!-- ===== FAVICONS ===== -->
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="Electropy" />
-<link rel="manifest" href="/site.webmanifest" />
-<link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-<meta name="apple-mobile-web-app-title" content="Electropy" />
-<link rel="manifest" href="/site.webmanifest" />
-
-<!-- ===== TEXTS ===== -->
-<script src="./texts.js"></script>
-
+<title>ElectroPy — Launching Soon</title>
 <style>
 /* ============================================================
-   ELECTROPY — pure CSS + vanilla JS
+   ELECTROPY COUNTDOWN — matches site theme
+   paper #eee9df · ink #0b1b2a · accent #91b9c2 / #cfe2e3
    ============================================================ */
-
 :root {
   --paper: #eee9df;
+  --paper-2: #e5e1d8;
   --ink: #0b1b2a;
   --ink-2: #102332;
+  --ink-3: #17303e;
   --accent: #91b9c2;
   --accent-2: #cfe2e3;
+  --accent-3: #b8d7dc;
+  --muted: #64737a;
+  --muted-2: #829097;
+  --line: #8b9ba0;
+  --card-cream: #f5f1e9;
   --ease-out: cubic-bezier(.22, 1, .36, 1);
   --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
 body {
-  background: var(--paper);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.2rem;
+  background-color: var(--paper);
+  background-image:
+    linear-gradient(rgba(159,179,191,.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(159,179,191,.12) 1px, transparent 1px),
+    radial-gradient(circle at 18% 12%, rgba(145,185,194,.14) 0%, transparent 45%),
+    radial-gradient(circle at 85% 88%, rgba(23,48,62,.08) 0%, transparent 50%);
+  background-size: 36px 36px, 36px 36px, 100% 100%, 100% 100%;
   font-family: 'Segoe UI', Tahoma, sans-serif;
-  overflow-x: hidden;
+  color: var(--ink-3);
   -webkit-font-smoothing: antialiased;
-}
-body.menu-open { overflow: hidden; }
-
-@media (hover: hover) and (pointer: fine) {
-  body, body * { cursor: none !important; }
+  overflow-x: hidden;
 }
 
-.page-wrapper { width: 100%; }
-.page-desktop { display: block; }
-.page-mobile  { display: none; }
-.page-desktop > svg, .page-mobile > svg {
-  display: block; width: 100%; height: auto; overflow: visible;
-  user-select: none; -webkit-user-select: none;
+/* ================= CARD ================= */
+.countdown-card {
+  position: relative;
+  width: 100%;
+  max-width: 880px;
+  background: rgba(245, 241, 233, 0.92);
+  border: 1px solid rgba(139, 155, 160, 0.55);
+  border-radius: 10px;
+  box-shadow:
+    0 24px 60px rgba(16, 35, 50, 0.10),
+    0 2px 0 rgba(255,255,255,.6) inset;
+  overflow: hidden;
+  animation: cardIn 1s var(--ease-out) both;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(28px) scale(.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* ================= LOADING SCREEN ================= */
-.loader {
-  position: fixed; inset: 0; z-index: 99999;
-  background: #0a1d2b;
-  display: flex; align-items: center; justify-content: center;
-  flex-direction: column; gap: 26px;
-  transition: opacity .9s ease, visibility .9s ease;
-}
-.loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-.loader-resistor { width: 120px; height: 60px; }
-.loader-resistor svg { width: 100%; height: 100%; }
-.loader-bar {
-  width: 220px; height: 2px;
-  background: rgba(145,185,194,.18);
-  border-radius: 2px; overflow: hidden; position: relative;
-}
-.loader-bar::after {
-  content: ''; position: absolute; inset: 0; width: 0;
-  background: linear-gradient(90deg, #91b9c2, #cfe2e3);
-  animation: loadFill 1.7s cubic-bezier(.65,0,.35,1) forwards;
-  box-shadow: 0 0 12px rgba(145,185,194,.7);
-}
-@keyframes loadFill { to { width: 100%; } }
-.loader-text {
-  color: #91b9c2; font-size: 11px; letter-spacing: .35em;
-  font-weight: 600;
-  animation: pulseText 1.6s ease-in-out infinite;
-}
-@keyframes pulseText { 0%,100% { opacity: .45; } 50% { opacity: 1; } }
-.ldr-body {
-  stroke-dasharray: 400; stroke-dashoffset: 400;
-  animation: drawLine 1.4s ease .2s forwards;
-}
-@keyframes drawLine { to { stroke-dashoffset: 0; } }
-.ldr-band { opacity: 0; animation: bandIn .3s ease forwards; }
-.ldr-band:nth-child(2) { animation-delay: .9s; }
-.ldr-band:nth-child(3) { animation-delay: 1.0s; }
-.ldr-band:nth-child(4) { animation-delay: 1.1s; }
-.ldr-band:nth-child(5) { animation-delay: 1.2s; }
-@keyframes bandIn { to { opacity: 1; } }
-.ldr-glow {
-  fill: none; stroke: #91b9c2; stroke-width: 1; opacity: 0;
-  animation: glowPulse 1.8s ease-in-out .6s infinite;
-}
-@keyframes glowPulse { 0%,100% { opacity: 0; } 50% { opacity: .5; } }
-
-/* ================= SCROLL PROGRESS ================= */
-.scroll-progress {
-  position: fixed; top: 0; left: 0;
-  height: 2px; width: 0%;
-  background: linear-gradient(90deg, #91b9c2, #17303e);
-  z-index: 9999;
-  transition: width .15s linear;
+/* top ink strip — like feature cards */
+.countdown-card::before {
+  content: '';
+  display: block;
+  height: 7px;
+  background: var(--ink-3);
 }
 
-/* ================= STICKY HEADER — شفاف‌تر ================= */
-.sticky-header {
-  position: fixed; top: -100px; left: 0; right: 0;
-  height: 78px; z-index: 9998;
+/* faint grid inside card */
+.countdown-card::after {
+  content: '';
+  position: absolute;
+  inset: 7px 0 0 0;
+  background-image:
+    linear-gradient(rgba(159,179,191,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(159,179,191,.08) 1px, transparent 1px);
+  background-size: 28px 28px;
   pointer-events: none;
-  background: rgba(238, 233, 223, 0.62);
-  backdrop-filter: blur(22px) saturate(180%);
-  -webkit-backdrop-filter: blur(22px) saturate(180%);
-  border-bottom: 1px solid rgba(23,48,62,.08);
-  box-shadow: 0 4px 24px rgba(16,43,58,.05);
-  transition: top .45s var(--ease-out), opacity .45s ease;
-  display: flex; align-items: center;
-  padding: 0 clamp(20px, 4vw, 72px);
-  opacity: 0;
+  mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 70%);
 }
-.sticky-header.visible { top: 0; pointer-events: auto; opacity: 1; }
-.sticky-inner {
-  width: 100%; max-width: 1440px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+
+.card-inner {
+  position: relative;
+  z-index: 1;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.4rem, 4vw, 3.2rem) clamp(2rem, 4vw, 2.8rem);
+  text-align: center;
 }
-.sticky-brand {
-  display: flex; align-items: center; gap: 12px;
-  color: #102332; font-weight: 700; font-size: 22px; letter-spacing: -.02em;
-  transition: transform .35s var(--ease-spring);
-  background: none; border: none; padding: 0;
+
+/* ================= HEADER ================= */
+.eyebrow {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 1.1rem;
+  padding: 5px 12px;
+  border: 1px solid rgba(145, 185, 194, 0.45);
+  border-radius: 4px;
+  background: rgba(207, 226, 227, 0.25);
 }
-.sticky-brand:hover { transform: scale(1.03); }
-.sticky-brand-icon {
-  width: 42px; height: 42px; border-radius: 5px;
+
+.brand-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 0.9rem;
+}
+.brand-icon {
+  width: 48px; height: 48px;
+  border-radius: 5px;
   background: var(--ink);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: transform .4s var(--ease-spring), box-shadow .4s ease;
+  box-shadow: 0 6px 18px rgba(11, 27, 42, 0.22);
+  animation: floatIcon 6s ease-in-out infinite;
 }
-.sticky-brand:hover .sticky-brand-icon {
-  transform: rotate(-6deg) scale(1.06);
-  box-shadow: 0 6px 18px rgba(11,27,42,.30);
+@keyframes floatIcon {
+  0%,100% { transform: translateY(0) rotate(0); }
+  50%     { transform: translateY(-4px) rotate(-3deg); }
 }
-.sticky-brand-icon svg { width: 100%; height: 100%; display: block; }
-.sticky-nav {
-  display: flex; align-items: center;
-  gap: clamp(20px, 3vw, 40px);
-  font-size: 14px; color: #33464f;
-}
-.sticky-nav button {
-  background: none; border: none; font: inherit; color: inherit;
-  padding: 4px 0;
-  transition: color .35s ease, transform .35s var(--ease-spring);
-  position: relative;
-}
-.sticky-nav button:hover { color: #79a7b2; transform: translateY(-1px); }
-.sticky-nav button::after {
-  content: ''; position: absolute; left: 0; bottom: -4px;
-  width: 0; height: 1px; background: #91b9c2;
-  transition: width .4s var(--ease-out);
-}
-.sticky-nav button:hover::after { width: 100%; }
+.brand-icon svg { width: 100%; height: 100%; display: block; }
 
-/* ===== دکمه گیت‌هاب هدر — متن دقیقاً وسط ===== */
-.sticky-cta {
-  background: var(--ink); color: #e8e4dc;
-  font-size: 13px; font-weight: 600; font-family: inherit;
-  padding: 0 20px; height: 44px;
-  border-radius: 5px; border: none;
-  transition: transform .35s var(--ease-spring), filter .4s ease, box-shadow .4s ease;
-  display: inline-flex; align-items: center; justify-content: center;
-  gap: 7px; line-height: 1;
+.brand-text { text-align: left; line-height: 1.1; }
+.brand-name {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--ink-3);
+}
+.brand-sub {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.headline {
+  font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+  font-weight: 700;
+  color: var(--ink-2);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.55rem;
+}
+.headline .hl {
+  color: var(--ink);
+  position: relative;
   white-space: nowrap;
 }
-.sticky-cta span { display: inline-flex; align-items: center; }
-.sticky-cta svg { display: block; transition: transform .35s var(--ease-spring); flex-shrink: 0; }
-.sticky-cta:hover {
-  transform: translateY(-2px) scale(1.04);
-  filter: brightness(1.15);
-  box-shadow: 0 8px 22px rgba(145,185,194,.45);
-}
-.sticky-cta:hover svg { transform: translate(1px, -1px); }
-.sticky-cta:active { transform: scale(.96); }
-
-/* ================= HAMBURGER ================= */
-.hamburger {
-  display: none;
-  width: 42px; height: 42px; border-radius: 8px;
-  background: var(--ink); border: none;
-  position: relative; z-index: 10001;
-  align-items: center; justify-content: center; flex-direction: column; gap: 5px;
-  transition: transform .35s var(--ease-spring), background .3s ease;
-  padding: 0; flex-shrink: 0;
-}
-.hamburger:hover { background: #17303e; transform: scale(1.06); }
-.hamburger:active { transform: scale(.93); }
-.hamburger span {
-  display: block; width: 19px; height: 2px;
-  background: var(--accent-2); border-radius: 2px;
-  transition: transform .38s var(--ease-out), opacity .25s ease;
-  transform-origin: center;
-}
-.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-/* ================= MOBILE MENU ================= */
-.mobile-menu {
-  display: none;
-  position: fixed; top: 68px; left: 12px; right: 12px;
-  z-index: 10000;
-  background: rgba(10, 29, 43, 0.97);
-  backdrop-filter: blur(18px) saturate(140%);
-  -webkit-backdrop-filter: blur(18px) saturate(140%);
-  border-radius: 12px;
-  border: 1px solid rgba(145,185,194,.28);
-  box-shadow: 0 18px 40px rgba(0,0,0,.35);
-  flex-direction: column; padding: 10px; gap: 2px;
-  opacity: 0; visibility: hidden;
-  transform: translateY(-14px) scale(.985);
-  transform-origin: top center;
-  transition: opacity .32s ease, visibility .32s ease, transform .4s var(--ease-out);
-}
-.mobile-menu.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
-.mobile-menu-header {
-  display: flex; align-items: center; gap: 10px;
-  padding: 6px 6px 12px; margin-bottom: 4px;
-  border-bottom: 1px solid rgba(145,185,194,.18);
-}
-.mobile-menu-logo {
-  width: 42px; height: 42px; border-radius: 5px;
-  background: var(--ink);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0; overflow: hidden;
-}
-.mobile-menu-logo svg { width: 100%; height: 100%; display: block; }
-.mobile-menu-brand-text { display: flex; flex-direction: column; line-height: 1.1; }
-.mobile-menu-brand-name {
-  color: var(--accent-2); font-size: 17px; font-weight: 700; letter-spacing: -.01em;
-}
-.mobile-menu-brand-sub {
-  color: #65747b; font-size: 8px; letter-spacing: .22em;
-  font-weight: 600; margin-top: 3px;
-}
-.mobile-menu-header, .mobile-menu a {
-  opacity: 0; transform: translateY(-9px);
-  transition:
-    opacity .3s ease calc(var(--i, 0) * 45ms),
-    transform .45s var(--ease-out) calc(var(--i, 0) * 45ms),
-    background .25s ease, color .25s ease, border-color .25s ease;
-}
-.mobile-menu.open .mobile-menu-header,
-.mobile-menu.open a { opacity: 1; transform: translateY(0); }
-.mobile-menu a {
-  color: var(--accent-2); font-size: 15px; font-weight: 600;
-  letter-spacing: .04em; text-decoration: none;
-  padding: 12px 16px; border-radius: 8px;
-  border: 1px solid transparent;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.mobile-menu a .m-chev {
-  color: rgba(145,185,194,.55);
-  transition: transform .25s ease, color .25s ease;
-}
-.mobile-menu a:hover, .mobile-menu a:active {
-  background: rgba(145,185,194,.12);
-  color: #91b9c2;
-  border-color: rgba(145,185,194,.3);
-}
-.mobile-menu a:hover .m-chev, .mobile-menu a:active .m-chev {
-  transform: translateX(4px); color: #91b9c2;
+.headline .hl::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 2px;
+  background: var(--accent);
+  opacity: .7;
 }
 
-/* ===== دکمه گیت‌هاب منوی موبایل ===== */
-.mobile-menu .mobile-gh-btn {
-  margin-top: 6px;
-  background: #91b9c2; color: #0a1d2b !important;
-  font-weight: 700; padding: 13px 20px !important;
-  border-radius: 8px; border: none !important;
-  justify-content: center; gap: 8px;
+.subline {
+  font-size: clamp(0.82rem, 1.8vw, 0.95rem);
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 520px;
+  margin: 0 auto 2.2rem;
 }
-.mobile-menu .mobile-gh-btn:hover { background: var(--accent-2); color: #0a1d2b !important; }
-.mobile-backdrop {
-  display: none;
-  position: fixed; inset: 0; z-index: 9999;
-  background: rgba(10, 29, 43, 0.35);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
-  opacity: 0; visibility: hidden;
-  transition: opacity .3s ease, visibility .3s ease;
-}
-.mobile-backdrop.open { opacity: 1; visibility: visible; }
-
-/* ================= TOAST ================= */
-.toast {
-  position: fixed; bottom: 30px; left: 50%;
-  transform: translate(-50%) translateY(100px);
-  background: rgba(16,43,58,.95);
-  color: #e8e4dc;
-  font-size: 13px; font-weight: 500; letter-spacing: .05em;
-  padding: 12px 20px; border-radius: 6px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.28);
-  z-index: 99996;
-  opacity: 0;
-  transition: transform .45s var(--ease-out), opacity .45s ease;
-  border: 1px solid rgba(145,185,194,.35);
-  max-width: 90vw; text-align: center;
-  display: inline-flex; align-items: center; gap: 9px;
-  pointer-events: none;
-}
-.toast.show { transform: translate(-50%) translateY(0); opacity: 1; }
-.toast svg { color: #91b9c2; flex-shrink: 0; }
-
-/* ================= SVG BUTTONS & CARDS ================= */
-.btn-g, .feature-card, .arch-block, .proj-panel {
-  transform-box: fill-box; transform-origin: center;
-  will-change: transform, filter;
-}
-.btn-g { transition: transform .4s var(--ease-spring), filter .45s ease; }
-.btn-g:hover { transform: scale(1.05); filter: brightness(1.07) drop-shadow(0 6px 18px rgba(145,185,194,.45)); }
-.btn-g:active { transform: scale(.97); filter: brightness(.94); }
-.btn-outline-g {
-  transform-box: fill-box; transform-origin: center;
-  transition: transform .4s var(--ease-spring), filter .45s ease;
-}
-.btn-outline-g .btn-outline { transition: fill .4s ease; }
-.btn-outline-g:hover { transform: scale(1.04); filter: drop-shadow(0 4px 12px rgba(145,185,194,.3)); }
-.btn-outline-g:hover .btn-outline { fill: rgba(182,215,220,.12); }
-.btn-outline-g:active { transform: scale(.97); }
-.nav-link {
-  transform-box: fill-box; transform-origin: center;
-  transition: fill .4s ease, transform .35s var(--ease-spring);
-}
-.nav-link:hover { fill: #9fd3dd !important; }
-.footer-link { transition: fill .4s ease; }
-.footer-link:hover { fill: #91b9c2 !important; }
-.feature-card { transition: transform .5s var(--ease-out), filter .5s ease; }
-.feature-card:hover { transform: translateY(-9px) scale(1.012); filter: drop-shadow(0 16px 30px rgba(16,43,58,.2)); }
-.feature-card:active { transform: translateY(-2px) scale(.995); }
-.arch-block, .proj-panel { transition: transform .5s var(--ease-out), filter .5s ease; }
-.arch-block:hover, .proj-panel:hover { transform: translateY(-6px) scale(1.01); filter: drop-shadow(0 10px 22px rgba(16,43,58,.22)); }
-.arch-block:active, .proj-panel:active { transform: translateY(-1px) scale(.997); }
-.deco-cross { transform-box: fill-box; transform-origin: center; transition: transform .55s var(--ease-out); }
-.feature-card:hover .deco-cross { transform: rotate(90deg); }
-.deco-dot { transform-box: fill-box; transform-origin: center; }
-.feature-card:hover .deco-dot { animation: dotPop .7s var(--ease-spring); }
-@keyframes dotPop { 0% { transform: scale(1); } 45% { transform: scale(1.45); } to { transform: scale(1); } }
-.deco-lang { transform-box: fill-box; transform-origin: center; transition: transform .45s var(--ease-spring); }
-.feature-card:hover .deco-lang { transform: scale(1.12); }
-.dl-pulse { transform-box: fill-box; transform-origin: center; }
-.dl-pulse.pulse { animation: dlPulse 1.5s var(--ease-out); }
-@keyframes dlPulse {
-  0% { filter: none; transform: scale(1); }
-  25% { filter: drop-shadow(0 0 26px rgba(145,185,194,.95)); transform: scale(1.06); }
-  55% { filter: drop-shadow(0 0 14px rgba(145,185,194,.6)); transform: scale(.99); }
-  to { filter: none; transform: scale(1); }
-}
-.launcher-line { stroke-dasharray: 8 6; animation: dashMove 3s linear infinite; }
-@keyframes dashMove { to { stroke-dashoffset: -56; } }
-.dl-card-glow { animation: softPulse 5s ease-in-out infinite; }
-@keyframes softPulse { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
-
-/* ============================================================
-   HERO ENTRANCE
-   ============================================================ */
-@keyframes heroIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-.hero-el {
-  opacity: 0;
-  animation-name: heroIn, heroForce;
-  animation-duration: .9s, .01s;
-  animation-timing-function: cubic-bezier(.22,1,.36,1), linear;
-  animation-fill-mode: forwards, forwards;
-  animation-delay: var(--hd, 0ms), 2s;
-}
-@keyframes heroForce { to { opacity: 1; } }
-
-/* ================= SCROLL REVEAL ================= */
-.reveal {
-  opacity: 0; transform: translateY(38px); filter: blur(6px);
-  transition: opacity 1s ease, transform 1.05s var(--ease-out), filter .9s ease;
-  transition-delay: var(--rd, 0ms);
-  will-change: opacity, transform, filter;
-}
-.reveal.in { opacity: 1; transform: translateY(0); filter: blur(0); }
-.sweep-line {
-  transform-box: fill-box; transform-origin: left center;
-  transform: scaleX(0);
-  transition: transform 1.25s var(--ease-out) .3s;
-}
-.reveal.in .sweep-line { transform: scaleX(1); }
-.float-rect {
-  transform-box: fill-box; transform-origin: center;
-  animation: floatSq 9s ease-in-out infinite;
-}
-.float-rect:nth-child(2) { animation-duration: 7.5s;  animation-delay: -1.6s; }
-.float-rect:nth-child(3) { animation-duration: 10.5s; animation-delay: -3.1s; }
-.float-rect:nth-child(4) { animation-duration: 8.2s;  animation-delay: -2.2s; }
-.float-rect:nth-child(5) { animation-duration: 11s;   animation-delay: -4.4s; }
-.float-rect:nth-child(6) { animation-duration: 7s;    animation-delay: -0.8s; }
-@keyframes floatSq {
-  0%,100% { transform: translate(0) rotate(0); }
-  33%     { transform: translate(5px, -13px) rotate(5deg); }
-  66%     { transform: translate(-4px, -5px) rotate(-4deg); }
+.subline strong {
+  color: var(--ink-3);
+  font-weight: 700;
 }
 
-/* ================= CLICK RIPPLE ================= */
-.click-ripple {
-  position: fixed;
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  border: 1.5px solid #91b9c2;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%) scale(1);
+/* ================= COUNTDOWN GRID ================= */
+.countdown-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(0.5rem, 1.6vw, 1rem);
+  margin-bottom: 2rem;
+}
+
+.time-box {
+  position: relative;
+  background: var(--card-cream);
+  border: 1px solid rgba(139, 155, 160, 0.5);
+  border-radius: 8px;
+  padding: clamp(0.8rem, 2.5vw, 1.4rem) 0.4rem clamp(0.6rem, 1.8vw, 1rem);
+  overflow: hidden;
+  transition: transform .45s var(--ease-spring), box-shadow .45s ease, border-color .35s ease;
+  box-shadow: 0 4px 14px rgba(16, 35, 50, 0.06);
+}
+.time-box:hover {
+  transform: translateY(-5px);
+  border-color: var(--accent);
+  box-shadow: 0 14px 30px rgba(16, 35, 50, 0.14);
+}
+/* top ink strip on each box — echoes site cards */
+.time-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--ink-3);
   opacity: .9;
-  animation: clickRipple .8s ease-out forwards;
 }
-.click-ripple.touch {
-  width: 20px; height: 20px;
-  background: rgba(145,185,194,.18);
-  border-width: 1px;
-}
-@keyframes clickRipple { to { transform: translate(-50%, -50%) scale(6); opacity: 0; } }
+.time-box:nth-child(2)::before { background: var(--ink); }
+.time-box:nth-child(3)::before { background: var(--accent); }
+.time-box:nth-child(4)::before { background: var(--accent-2); }
 
-/* ================= RESISTOR CURSOR ================= */
-.resistor-shadow {
-  position: fixed; left: 0; top: 0;
-  width: 32px; height: 11px; border-radius: 999px;
-  transform-origin: center center;
-  z-index: 99997; pointer-events: none;
-  background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0) 75%);
-  filter: blur(3px);
-  opacity: 0; transition: opacity .5s ease;
-  will-change: transform;
+.time-value {
+  font-size: clamp(2.1rem, 7vw, 3.6rem);
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  letter-spacing: -0.03em;
+  display: block;
+  transition: transform .2s var(--ease-spring);
 }
-.resistor-body {
-  position: fixed; left: 0; top: 0;
-  width: 38px; height: 15px; border-radius: 999px;
-  transform-origin: center center;
-  z-index: 99998; pointer-events: none;
-  background:
-    linear-gradient(90deg,
-      transparent 0%, transparent 10%,
-      rgba(139,69,19,0.95) 10%, rgba(139,69,19,0.95) 19%,
-      transparent 19%, transparent 35%,
-      rgba(20,20,20,0.95) 35%, rgba(20,20,20,0.95) 44%,
-      transparent 44%, transparent 60%,
-      rgba(200,30,30,0.95) 60%, rgba(200,30,30,0.95) 69%,
-      transparent 69%, transparent 81%,
-      rgba(212,175,55,0.95) 81%, rgba(212,175,55,0.95) 90%,
-      transparent 90%, transparent 100%),
-    linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.03) 45%, rgba(0,0,0,0.12) 100%),
-    rgba(255,255,255,0.10);
-  border: 1.5px solid rgba(255,255,255,0.45);
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,0.5),
-    inset 0 -2px 6px rgba(0,0,0,0.25),
-    0 0 14px rgba(145,185,194,0.35),
-    0 6px 20px rgba(0,0,0,0.18);
-  backdrop-filter: blur(10px) saturate(160%);
-  -webkit-backdrop-filter: blur(10px) saturate(160%);
-  opacity: 0; transition: opacity .5s ease;
-  will-change: transform;
+.time-box.tick .time-value {
+  animation: tickPop .35s var(--ease-spring);
 }
-.resistor-body.active, .resistor-shadow.active { opacity: 1; }
-.cursor-stage {
-  position: fixed; inset: 0; z-index: 99996;
-  pointer-events: none; opacity: 0; transition: opacity .5s ease;
-  will-change: opacity;
+@keyframes tickPop {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.09); color: var(--accent); }
+  100% { transform: scale(1); }
 }
-.cursor-stage.active { opacity: 1; }
-@media (hover: none), (pointer: coarse) {
-  .cursor-stage, .resistor-body, .resistor-shadow { display: none !important; }
+
+.time-label {
+  display: block;
+  margin-top: 0.55rem;
+  font-size: clamp(0.58rem, 1.5vw, 0.72rem);
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ================= TARGET / FOOTER ================= */
+.target-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 0.9rem 1.1rem;
+  background: rgba(207, 226, 227, 0.28);
+  border: 1px dashed rgba(145, 185, 194, 0.65);
+  border-radius: 6px;
+  margin-bottom: 1.4rem;
+}
+.target-bar svg { color: var(--accent); flex-shrink: 0; }
+.target-bar .t-date {
+  font-size: clamp(0.78rem, 1.8vw, 0.9rem);
+  font-weight: 700;
+  color: var(--ink-3);
+  letter-spacing: .02em;
+}
+.target-bar .t-time {
+  font-size: clamp(0.72rem, 1.6vw, 0.82rem);
+  color: var(--muted);
+}
+
+/* ================= STATUS LINE ================= */
+.status-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  font-size: clamp(0.7rem, 1.6vw, 0.8rem);
+  color: var(--muted-2);
+  letter-spacing: .08em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.status-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 0 rgba(145, 185, 194, .7);
+  animation: livePulse 2s ease-out infinite;
+}
+@keyframes livePulse {
+  0%   { box-shadow: 0 0 0 0 rgba(145, 185, 194, .7); }
+  70%  { box-shadow: 0 0 0 10px rgba(145, 185, 194, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(145, 185, 194, 0); }
+}
+
+/* ================= LAUNCHED STATE ================= */
+.launched {
+  display: none;
+  padding: 1rem 0 0.4rem;
+}
+.launched.show { display: block; animation: cardIn .8s var(--ease-out); }
+.launched h2 {
+  font-size: clamp(1.6rem, 5vw, 2.4rem);
+  font-weight: 800;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+.launched p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+.launched .launch-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 1rem;
+  padding: 6px 14px;
+  background: var(--accent-2);
+  color: var(--ink);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .16em;
 }
 
 /* ================= RESPONSIVE ================= */
-@media (max-width: 1024px) {
-  .sticky-header { height: 68px; padding: 0 24px; }
-  .sticky-brand { font-size: 19px; }
-  .sticky-brand-icon { width: 36px; height: 36px; }
+@media (max-width: 560px) {
+  .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+  .time-box:nth-child(1)::before,
+  .time-box:nth-child(2)::before { opacity: .9; }
+  .brand-row { flex-direction: column; gap: 10px; }
+  .brand-text { text-align: center; }
+  body { padding: 1.2rem 0.8rem; }
 }
-@media (max-width: 880px) {
-  .page-desktop { display: none; }
-  .page-mobile  { display: block; padding-top: 66px; }
-  .sticky-header { height: 62px; padding: 0 16px; }
-  .sticky-brand { font-size: 17px; gap: 9px; }
-  .sticky-brand-icon { width: 34px; height: 34px; }
-  .sticky-nav, .sticky-cta { display: none !important; }
-  .hamburger, .mobile-menu { display: flex; }
-  .mobile-backdrop { display: block; }
-  .toast { font-size: 12px; padding: 10px 16px; bottom: 18px; }
-  .reveal { transform: translateY(26px); }
-}
-@media (max-width: 480px) {
-  .page-mobile { padding-top: 60px; }
-  .sticky-header { height: 56px; padding: 0 12px; }
-  .sticky-brand { font-size: 15px; }
-  .sticky-brand-icon { width: 30px; height: 30px; }
-  .hamburger { width: 38px; height: 38px; }
-  .hamburger span { width: 17px; }
-  .mobile-menu { top: 60px; left: 8px; right: 8px; padding: 8px; }
-  .mobile-menu-logo { width: 36px; height: 36px; }
-  .mobile-menu-brand-name { font-size: 15px; }
-  .mobile-menu a { font-size: 14px; padding: 11px 14px; }
-  .mobile-menu .mobile-gh-btn { padding: 12px 18px !important; font-size: 14px; }
-}
+
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  .reveal { transition: opacity .3s ease; transform: none; filter: none; }
-  .hero-el { animation: none !important; opacity: 1 !important; }
-  .float-rect, .launcher-line, .dl-card-glow { animation: none !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
 }
 </style>
 </head>
 <body>
 
-<!-- ========== LOADING SCREEN ========== -->
-<div class="loader" id="loader">
-  <div class="loader-resistor">
-    <svg viewBox="0 0 120 60">
-      <rect class="ldr-body" x="10" y="20" width="100" height="30" rx="14" fill="none" stroke="#91b9c2" stroke-width="2"/>
-      <rect class="ldr-band" x="30" y="20" width="6" height="30" fill="#8a5a2b"/>
-      <rect class="ldr-band" x="46" y="20" width="6" height="30" fill="#1c1c1c"/>
-      <rect class="ldr-band" x="62" y="20" width="6" height="30" fill="#c0392b"/>
-      <rect class="ldr-band" x="78" y="20" width="6" height="30" fill="#d4ac0d"/>
-      <rect class="ldr-glow" x="6" y="16" width="108" height="38" rx="18"/>
-    </svg>
-  </div>
-  <div class="loader-bar"></div>
-  <div class="loader-text">LOADING ELECTROPY</div>
-</div>
+<div class="countdown-card">
+  <div class="card-inner">
 
-<!-- ========== STICKY HEADER ========== -->
-<header class="sticky-header" id="stickyHeader">
-  <div class="sticky-inner">
-    <button class="sticky-brand" id="brandBtn" aria-label="ElectroPy — back to top">
-      <div class="sticky-brand-icon">
+    <!-- ===== HEADER ===== -->
+    <span class="eyebrow">Launch Countdown</span>
+
+    <div class="brand-row">
+      <div class="brand-icon">
         <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
           <rect x="0" y="0" width="42" height="42" rx="5" fill="#0b1b2a"/>
-          <path d="M11 25h20M11 19h14M11 13h8" stroke="#9fc5d0" stroke-width="3" stroke-linecap="square" fill="none"/>
+          <path d="M11 25h20M11 19h14M11 13h8" stroke="#9fc5d0" stroke-width="3"
+                stroke-linecap="square" fill="none"/>
         </svg>
       </div>
-      <span data-text="brand">ElectroPy</span>
-    </button>
-    <nav class="sticky-nav">
-      <button data-nav="home" data-text="nav_home">Home</button>
-      <button data-nav="features" data-text="nav_features">Features</button>
-      <button data-nav="about" data-text="nav_about">About</button>
-      <button data-nav="download" data-text="nav_download">Download</button>
-    </nav>
-    <button class="sticky-cta" id="headerGithubBtn" aria-label="Visit GitHub">
-      <span data-text="nav_visit_github">Visit GitHub</span>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-    </button>
-    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</header>
+      <div class="brand-text">
+        <div class="brand-name">ElectroPy</div>
+        <div class="brand-sub">PAFORGE DEVELOPMENT TEAM</div>
+      </div>
+    </div>
 
-<!-- ========== MOBILE MENU ========== -->
-<div class="mobile-backdrop" id="mobileBackdrop"></div>
-<div class="mobile-menu" id="mobileMenu" role="menu" aria-hidden="true">
-  <div class="mobile-menu-header" style="--i:0">
-    <div class="mobile-menu-logo">
-      <svg viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
-        <rect x="0" y="0" width="42" height="42" rx="5" fill="#0b1b2a"/>
-        <path d="M11 25h20M11 19h14M11 13h8" stroke="#9fc5d0" stroke-width="3" stroke-linecap="square" fill="none"/>
+    <div class="headline">Something <span class="hl">electric</span> is coming</div>
+    <p class="subline">
+      ElectroPy goes live officially on <strong>Monday, November 9</strong> at
+      <strong>6:00 PM Iran Time</strong>. Until then, here's how long you have to wait.
+    </p>
+
+    <!-- ===== COUNTDOWN ===== -->
+    <div class="countdown-grid" id="countdown">
+      <div class="time-box" id="box-days">
+        <span class="time-value" id="days">00</span>
+        <span class="time-label">Days</span>
+      </div>
+      <div class="time-box" id="box-hours">
+        <span class="time-value" id="hours">00</span>
+        <span class="time-label">Hours</span>
+      </div>
+      <div class="time-box" id="box-minutes">
+        <span class="time-value" id="minutes">00</span>
+        <span class="time-label">Minutes</span>
+      </div>
+      <div class="time-box" id="box-seconds">
+        <span class="time-value" id="seconds">00</span>
+        <span class="time-label">Seconds</span>
+      </div>
+    </div>
+
+    <!-- ===== TARGET BAR ===== -->
+    <div class="target-bar">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <path d="M16 2v4M8 2v4M3 10h18"/>
       </svg>
+      <span class="t-date">Monday, November 9, 2026</span>
+      <span class="t-time">— 18:00 IRST (UTC+3:30)</span>
     </div>
-    <div class="mobile-menu-brand-text">
-      <span class="mobile-menu-brand-name" data-text="brand">ElectroPy</span>
-      <span class="mobile-menu-brand-sub" data-text="brand_sub">PARKAM DEVELOPMENT TEAM</span>
+
+    <!-- ===== STATUS ===== -->
+    <div class="status-line">
+      <span class="status-dot"></span>
+      <span>Launch sequence active</span>
     </div>
+
+    <!-- ===== LAUNCHED STATE ===== -->
+    <div class="launched" id="launched">
+      <div class="launch-badge">● LIVE NOW</div>
+      <h2>ElectroPy is live.</h2>
+      <p>Head to the download section and grab the latest Windows build.</p>
+    </div>
+
   </div>
-  <a style="--i:1" data-nav="home" role="menuitem"><span data-text="nav_home">Home</span>
-    <svg class="m-chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-  </a>
-  <a style="--i:2" data-nav="features" role="menuitem"><span data-text="nav_features">Features</span>
-    <svg class="m-chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-  </a>
-  <a style="--i:3" data-nav="about" role="menuitem"><span data-text="nav_about">About</span>
-    <svg class="m-chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-  </a>
-  <a style="--i:4" data-nav="download" role="menuitem"><span data-text="nav_download">Download</span>
-    <svg class="m-chev" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-  </a>
-  <a class="mobile-gh-btn" style="--i:5" id="mobileGithubBtn" role="menuitem"><span data-text="nav_visit_github">Visit GitHub</span>
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"/><path d="M7 17 17 7"/></svg>
-  </a>
 </div>
 
-<!-- ========== MAIN CONTENT ========== -->
-<main class="page-wrapper">
-
-  <!-- ===== DESKTOP SVG ===== -->
-  <div class="page-desktop">
-    <svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 3600" id="mainSvg" preserveAspectRatio="xMidYMid meet">
-      <defs>
-        <style>
-          .st0 { fill: #cfe2e3; }
-          .st0, .st1 { stroke: #71868d; }
-          .st2 { font-size: 11px; letter-spacing: .16em; }
-          .st2, .st3, .st4, .st5, .st6, .st11, .st12, .st14, .st15, .st21, .st24, .st31, .st35, .st36, .st37, .st38, .st44, .st45, .st46, .st47, .st48, .st49, .st50, .st52, .st53, .st55, .st56, .st60, .st61, .st64, .st68 { font-family: SegoeUI, 'Segoe UI'; }
-          .st2, .st41 { fill: #8a999d; }
-          .st3 { fill: #aebdc1; }
-          .st3, .st4, .st6, .st10, .st11, .st14, .st20, .st24, .st34, .st37, .st44, .st47, .st50, .st56, .st57, .st59, .st60, .st68 { font-size: 13px; }
-          .st73, .st74 { fill: #eee9df; }
-          .st4 { fill: #52666e; }
-          .st5 { font-size: 68px; }
-          .st5, .st25 { fill: #f5f1e8; }
-          .st6 { fill: #52636b; }
-          .st74, .st76 { stroke: #172b39; stroke-opacity: .22; }
-          .st77 { fill: #183747; }
-          .st7 { fill: url(#grid1); }
-          .st7, .st78 { opacity: .75; }
-          .st79 { fill: #829ba4; }
-          .st8 { fill: #163141; font-size: 27px; }
-          .st8, .st9, .st80, .st10, .st13, .st16, .st17, .st18, .st19, .st22, .st23, .st26, .st27, .st30, .st32, .st33, .st34, .st39, .st40, .st43, .st51, .st54, .st57, .st59, .st62, .st63, .st65, .st66, .st69, .st70, .st71 { font-family: SegoeUI-Bold, 'Segoe UI'; font-weight: 700; }
-          .st9, .st48 { fill: #193341; }
-          .st9, .st55, .st69 { font-size: 19px; }
-          .st81 { stroke: #9fc5d0; stroke-linecap: square; }
-          .st81, .st82, .st83 { stroke-width: 3px; }
-          .st84 { stroke: #8eabb3; }
-          .st84, .st85 { stroke-width: 2px; }
-          .st86 { fill: #cdd0ca; }
-          .st10 { fill: #e8efed; }
-          .st87 { fill: #b8d7dc; }
-          .st11 { fill: #66777c; }
-          .st88 { fill: #d6e5e6; }
-          .st89 { fill: #fff; }
-          .st12 { fill: #b4c3c6; }
-          .st12, .st15, .st31, .st46, .st49 { font-size: 18px; }
-          .st90 { mask: url(#mask); }
-          .st91 { stroke: #87999e; }
-          .st91, .st92, .st76, .st93 { fill: #f5f1e9; }
-          .st13 { fill: #657980; }
-          .st13, .st23, .st26, .st27, .st40, .st51, .st63, .st66 { font-size: 12px; }
-          .st13, .st23, .st26, .st27, .st40, .st51, .st63, .st66, .st70 { letter-spacing: .12em; }
-          .st94 { fill: #9cc4cc; }
-          .st95 { fill: #fffdf8; stroke: #8c9ba0; }
-          .st96 { filter: url(#luminosity-invert-noclip); }
-          .st97 { fill: #c9dfe2; }
-          .st14 { fill: #66777d; }
-          .st15 { fill: #627278; }
-          .st16 { fill: #152d3b; }
-          .st16, .st19, .st62 { font-size: 25px; }
-          .st17 { fill: #6c858d; }
-          .st17, .st18, .st21, .st22, .st29, .st54, .st64, .st65, .st71 { font-size: 14px; }
-          .st17, .st18, .st22, .st54, .st65, .st71 { letter-spacing: .17em; }
-          .st18 { fill: #9cc4cb; }
-          .st98, .st99, .st100, .st101, .st83, .st102 { fill: none; }
-          .st103 { fill: #244052; }
-          .st19 { fill: #f2eee5; }
-          .st20 { fill: #f6f2e9; }
-          .st21 { fill: #e9eee9; }
-          .st22 { fill: #627b83; }
-          .st23, .st49 { fill: #64737a; }
-          .st104 { fill: #0a1d2b; }
-          .st82, .st83 { stroke: #486571; }
-          .st99 { opacity: .55; stroke: #9eb1b8; }
-          .st105 { filter: url(#drop-shadow-1); }
-          .st106 { font-family: AdobeArabic-Regular, 'Adobe Arabic'; }
-          .st24 { fill: #69797e; }
-          .st25 { font-family: SegoeUIBlack, 'Segoe UI'; font-size: 72px; }
-          .st26 { fill: #617980; }
-          .st27 { fill: #65767c; }
-          .st107 { stroke: #6f8790; }
-          .st107, .st108 { fill: #102b3a; }
-          .st109 { fill: #b8d4d7; }
-          .st29 { fill: #0a1b29; }
-          .st30 { font-size: 31px; }
-          .st30, .st110 { fill: #f4efe6; }
-          .st31 { fill: #b6c4c6; }
-          .st32 { fill: #f3eee5; font-size: 24px; }
-          .st111 { fill: url(#grid); }
-          .st33 { fill: #173747; font-size: 30px; }
-          .st85 { stroke: #b8d4d7; }
-          .st112 { stroke: #819399; }
-          .st34, .st39 { fill: #102332; }
-          .st100 { stroke: #8ba0a9; }
-          .st113 { fill: #e6e1d7; stroke: #173040; stroke-opacity: .15; }
-          .st35 { fill: #132d3b; }
-          .st35, .st38, .st52 { font-size: 44px; letter-spacing: -.04em; }
-          .st36 { fill: #8ca1a6; font-size: 26px; }
-          .st37, .st59 { fill: #243946; }
-          .st38, .st42, .st114 { fill: #f4efe5; }
-          .st39 { font-size: 22px; }
-          .st115, .st116 { fill: #e8e4dc; }
-          .st40 { fill: #91b9c2; }
-          .st41 { font-family: SegoeUI-LightItalic, 'Segoe UI'; font-size: 10px; font-style: italic; font-weight: 300; letter-spacing: .16em; }
-          .st117 { stroke: #829097; stroke-opacity: .35; }
-          .st42 { font-size: 34px; }
-          .st43 { fill: #15303e; font-size: 37px; }
-          .st44 { fill: #829097; }
-          .st45 { fill: #65747b; font-size: 9px; letter-spacing: .22em; }
-          .st46 { fill: #65747a; }
-          .st118 { stroke: #9aabad; }
-          .st47, .st61 { fill: #aebdc0; }
-          .st119 { fill: #91b8c2; }
-          .st48 { font-size: 20px; }
-          .st120 { fill: #e5e1d8; stroke: #8e9da1; stroke-opacity: .5; }
-          .st50 { fill: #586a70; }
-          .st121 { fill: #e7ece8; stroke: #b3c2c0; }
-          .st51 { fill: #9fc2c8; }
-          .st122 { fill: #eeeae2; }
-          .st52 { fill: #122b39; }
-          .st78 { mix-blend-mode: screen; }
-          .st53, .st67 { fill: #2c4049; }
-          .st53, .st70 { font-size: 16px; }
-          .st54 { fill: #91b9c1; }
-          .st124 { fill: #0b1b2a; }
-          .st101 { opacity: .12; stroke: #9fb3bf; }
-          .st125 { stroke: #607b84; }
-          .st55 { fill: #b8c6ca; }
-          .st56 { fill: #80989f; }
-          .st126 { fill: #f2eee6; }
-          .st57 { fill: #173240; }
-          .st58 { fill: #112d3d; opacity: .77; }
-          .st60 { fill: #687980; }
-          .st61 { font-size: 17px; }
-          .st62 { fill: #17313f; }
-          .st102 { opacity: .16; stroke: #243946; }
-          .st63 { fill: #64767a; }
-          .st128 { fill: url(#linear-gradient); }
-          .st116 { stroke: #b0b9b9; }
-          .st64 { fill: #33464f; }
-          .st65 { fill: #58737c; }
-          .st129 { fill: #dcd8cf; }
-          .st66 { fill: #647980; }
-          .st1 { fill: #f7f3ea; }
-          .st67 { font-size: 15px; }
-          .st130 { opacity: .83; }
-          .st68 { fill: #78858a; }
-          .st69 { fill: #17303e; }
-          .st93 { stroke: #8b9ba0; stroke-opacity: .55; }
-          .st70 { fill: #687a80; }
-          .st71 { fill: #8fbac7; }
-          svg text { transition-property: none; }
-        </style>
-        <pattern id="grid" x="0" y="0" width="36" height="36" patternTransform="translate(27 -14392) scale(1 -1)" patternUnits="userSpaceOnUse" viewBox="0 0 36 36">
-          <g>
-            <rect class="st98" width="36" height="36"/>
-            <polyline class="st101" points="36 36 0 36 0 0"/>
-          </g>
-        </pattern>
-        <filter id="drop-shadow-1" x="1192" y="44" width="160" height="72" filterUnits="userSpaceOnUse">
-          <feOffset dx="1" dy="-1"/>
-          <feGaussianBlur result="blur" stdDeviation="5"/>
-          <feFlood flood-color="#000" flood-opacity=".64"/>
-          <feComposite in2="blur" operator="in"/>
-          <feComposite in="SourceGraphic"/>
-        </filter>
-        <linearGradient id="linear-gradient" x1="-278.78" y1="2800.9" x2="-277.78" y2="2799.9" gradientTransform="translate(361377 2492958) scale(1296 -890)" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#071321"/>
-          <stop offset="1" stop-color="#10283b"/>
-        </linearGradient>
-        <pattern id="grid1" data-name="grid" patternTransform="translate(99 -14550) scale(1 -1)" xlink:href="#grid" href="#grid"/>
-        <filter id="luminosity-invert-noclip" x="134" y="3052" width="1087.33" height="174" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
-          <feColorMatrix result="cm" values="-1 0 0 0 1 0 -1 0 0 1 0 0 -1 0 1 0 0 0 1 0"/>
-          <feFlood flood-color="#fff" result="bg"/>
-          <feBlend in="cm" in2="bg"/>
-        </filter>
-        <mask id="mask" x="134" y="3052" width="1087.33" height="174" maskUnits="userSpaceOnUse">
-          <g class="st96">
-            <path class="st89" d="M812.43,3097.2h323.14c2.76,0,5,2.24,5,5v47.76c0,17.03-13.82,30.85-30.85,30.85h-323.14c-2.76,0-5-2.24-5-5v-47.76c0-17.03,13.82-30.85,30.85-30.85Z"/>
-          </g>
-        </mask>
-        <!-- ===== CLIP PATH دسکتاپ (دقیقاً هم‌اندازه عکس) ===== -->
-        <clipPath id="desktopImgClip">
-          <rect x="544" y="479" width="807" height="495" rx="24" ry="24"/>
-        </clipPath>
-        <!-- ===== فیلتر BLUR برای هاله (فقط لبه‌ها نرم می‌شن) ===== -->
-        <filter id="haloBlur" x="-15%" y="-15%" width="130%" height="130%">
-          <feGaussianBlur stdDeviation="14"/>
-        </filter>
-      </defs>
-
-      <g class="st28">
-        <g id="Layer_1">
-          <rect class="st73" width="1440" height="3600"/>
-          <rect class="st111" width="1440" height="3600"/>
-
-          <!-- ===== SVG HEADER ===== -->
-          <g class="svg-header">
-            <rect class="st76" x="72" y="42" width="1296" height="78" rx="8" ry="8"/>
-            <g>
-              <rect class="st124" x="100" y="60" width="42" height="42" rx="5" ry="5"/>
-              <path class="st81" d="M111,87h20M111,81h14M111,75h8"/>
-              <text class="st39" transform="translate(158 78)">
-                <tspan x="0" y="0" data-text="brand">ElectroPy</tspan>
-              </text>
-              <text class="st45" transform="translate(158 95)">
-                <tspan x="0" y="0" data-text="brand_sub">PARKAM DEVELOPMENT TEAM</tspan>
-              </text>
-            </g>
-            <g class="svg-header-nav">
-              <text class="st64 nav-link" data-nav="home" transform="translate(607 83)">
-                <tspan x="0" y="0" data-text="nav_home">Home</tspan>
-              </text>
-              <text class="st64 nav-link" data-nav="features" transform="translate(689 83)">
-                <tspan x="0" y="0" data-text="nav_features">Features</tspan>
-              </text>
-              <text class="st64 nav-link" data-nav="about" transform="translate(783 83)">
-                <tspan x="0" y="0" data-text="nav_about">About</tspan>
-              </text>
-              <text class="st64 nav-link" data-nav="download" transform="translate(857 83)">
-                <tspan x="0" y="0" data-text="nav_download">Download</tspan>
-              </text>
-            </g>
-            <!-- ===== دکمه گیت‌هاب هدر — متن وسط ===== -->
-            <g id="navGithubBtn" class="btn-g" data-action="github">
-              <g class="st105">
-                <rect class="st124" x="1186" y="60" width="150" height="42" rx="5" ry="5"/>
-              </g>
-              <text class="st20" style="pointer-events:none" transform="translate(1215 87)" text-anchor="start">
-                <tspan class="st80" x="0" y="0" data-text="nav_visit_github">Visit GitHub</tspan>
-                <tspan class="st106" x="82" y="0">↗</tspan>
-              </text>
-            </g>
-          </g>
-
-          <!-- ===== HERO ===== -->
-          <g>
-            <path class="st128" d="M72,158h1112.92c101.11,0,183.08,81.97,183.08,183.08v706.92H255.08c-101.11,0-183.08-81.97-183.08-183.08V158Z"/>
-            <path class="st7" d="M72,158h1296v890H72V158Z"/>
-            <path class="st111" d="M72,158h1082.15l-418.62,890h-479.19c-101.81,0-184.34-82.53-184.34-184.34V158Z"/>
-            <g>
-              <text class="st71 hero-el" style="--hd:120ms" transform="translate(142 244)">
-                <tspan x="0" y="0" data-text="hero_eyebrow">DESKTOP ELECTRONICS TOOLKIT</tspan>
-              </text>
-              <g class="st28">
-                <text class="st25 hero-el" style="--hd:260ms" transform="translate(142 334)">
-                  <tspan x="0" y="0" data-text="hero_title">Electropy</tspan>
-                </text>
-                <text class="st5 hero-el" style="--hd:420ms" transform="translate(142 419)">
-                  <tspan x="0" y="0" data-text="hero_subtitle">Electronics, made practical.</tspan>
-                </text>
-              </g>
-              <text class="st55 hero-el" style="--hd:560ms" transform="translate(142 462)">
-                <tspan x="0" y="0" data-text="hero_desc_line1">A focused Windows toolkit for practical electronics calculations —</tspan>
-              </text>
-              <text class="st55 hero-el" style="--hd:660ms" transform="translate(142 495)">
-                <tspan x="0" y="0" data-text="hero_desc_line2">built around a clean, extensible desktop experience.</tspan>
-              </text>
-              <g class="hero-el" style="--hd:800ms">
-                <g id="heroDownloadBtn" class="btn-g" data-action="scroll-download">
-                  <rect class="st87" x="149.35" y="536" width="166" height="52" rx="5" ry="5"/>
-                  <text class="st29" style="pointer-events:none" transform="translate(161.65 568)">
-                    <tspan class="st80" x="0" y="0" data-text="hero_btn_download">Download ElectroPy </tspan>
-                    <tspan class="st106" x="136.41" y="0">↗</tspan>
-                  </text>
-                </g>
-                <g id="heroExploreBtn" class="btn-outline-g" data-action="explore">
-                  <rect class="st100 btn-outline" x="325.74" y="536" width="146.03" height="52" rx="5" ry="5"/>
-                  <text class="st21" style="pointer-events:none" transform="translate(349.26 568)">
-                    <tspan x="0" y="0" data-text="hero_btn_explore">Explore features</tspan>
-                  </text>
-                </g>
-              </g>
-              <g class="hero-el" style="--hd:920ms">
-                <circle class="st94" cx="147" cy="633" r="5"/>
-                <text class="st3" transform="translate(162 638)">
-                  <tspan x="0" y="0" data-text="hero_badge_os">Windows desktop application</tspan>
-                </text>
-                <circle class="st94" cx="338" cy="633" r="5"/>
-                <text class="st3" transform="translate(353 638)">
-                  <tspan x="0" y="0" data-text="hero_badge_lang_1">English / </tspan>
-                </text>
-                <text class="st3" transform="translate(405.95 638)">
-                  <tspan x="0" y="0" data-text="hero_badge_lang_2">فارسی</tspan>
-                </text>
-              </g>
-            </g>
-          </g>
-
-          <!-- ===== FEATURES ===== -->
-          <g data-section-target="features" class="reveal">
-            <text class="st65" transform="translate(72 1125)">
-              <tspan x="0" y="0" data-text="features_eyebrow">01 — WHY ELECTROPY</tspan>
-            </text>
-            <text class="st52" transform="translate(72 1195)">
-              <tspan x="0" y="0" data-text="features_title">Tools without the clutter.</tspan>
-            </text>
-            <rect class="sweep-line" x="74" y="1217" width="200" height="2" fill="#91b9c2" opacity=".7"/>
-            <text class="st49" transform="translate(72 1237)">
-              <tspan x="0" y="0" data-text="features_desc">A practical desktop environment built around focused electronics utilities.</tspan>
-            </text>
-
-            <g class="feature-card reveal" style="--rd:120ms">
-              <rect class="st93" x="72" y="1290" width="410" height="270"/>
-              <path class="st77" d="M72.56,1290.56h408.95v7H72.56v-7Z"/>
-              <text class="st17" transform="translate(102 1348)">
-                <tspan x="0" y="0" data-text="feature_1_num">01</tspan>
-              </text>
-              <text class="st62" transform="translate(102 1395)">
-                <tspan x="0" y="0" data-text="feature_1_title">Practical tools</tspan>
-              </text>
-              <text class="st15" transform="translate(102 1432)">
-                <tspan x="0" y="0" data-text="feature_1_desc_line1">Focused calculators for everyday</tspan>
-              </text>
-              <text class="st15" transform="translate(102 1459)">
-                <tspan x="0" y="0" data-text="feature_1_desc_line2">electronics work.</tspan>
-              </text>
-              <path class="st84 deco-cross" d="M382,1500h70M417,1465v70"/>
-              <circle class="st77 deco-dot" cx="417" cy="1500" r="8"/>
-            </g>
-
-            <g class="feature-card reveal" style="--rd:240ms">
-              <rect class="st107" x="514" y="1290" width="410" height="270"/>
-              <text class="st18" transform="translate(544 1348)">
-                <tspan x="0" y="0" data-text="feature_2_num">02</tspan>
-              </text>
-              <text class="st19" transform="translate(544 1395)">
-                <tspan x="0" y="0" data-text="feature_2_title">Extensible by design</tspan>
-              </text>
-              <text class="st12" transform="translate(544 1432)">
-                <tspan x="0" y="0" data-text="feature_2_desc_line1">The launcher can load independent</tspan>
-              </text>
-              <text class="st12" transform="translate(544 1459)">
-                <tspan x="0" y="0" data-text="feature_2_desc_line2">extensions at runtime.</tspan>
-              </text>
-              <g>
-                <rect class="st109" x="806" y="1488" width="42" height="30"/>
-                <rect class="st109" x="860" y="1488" width="42" height="30"/>
-                <path class="st85 launcher-line" d="M848,1503h12"/>
-              </g>
-              <path class="st92" d="M514.52,1290.56h409.15v7h-409.15v-7Z"/>
-            </g>
-
-            <g class="feature-card reveal" style="--rd:360ms">
-              <rect class="st93" x="956" y="1290" width="412" height="270"/>
-              <text class="st17" transform="translate(986 1348)">
-                <tspan x="0" y="0" data-text="feature_3_num">03</tspan>
-              </text>
-              <text class="st62" transform="translate(986 1395)">
-                <tspan x="0" y="0" data-text="feature_3_title">Bilingual interface</tspan>
-              </text>
-              <text class="st15" transform="translate(986 1432)">
-                <tspan x="0" y="0" data-text="feature_3_desc_line1">English and Persian support with</tspan>
-              </text>
-              <text class="st15" transform="translate(986 1459)">
-                <tspan x="0" y="0" data-text="feature_3_desc_line2">a natural RTL / LTR system.</tspan>
-              </text>
-              <g class="deco-lang">
-                <text class="st33" transform="translate(1268 1514)">
-                  <tspan x="0" y="0">EN</tspan>
-                </text>
-                <text class="st36" transform="translate(1311 1514)">
-                  <tspan x="0" y="0">فا</tspan>
-                </text>
-              </g>
-              <path class="st77" d="M956.6,1290.56h410.93v7h-410.93v-7Z"/>
-            </g>
-          </g>
-
-          <!-- ===== ABOUT / ARCHITECTURE ===== -->
-          <g data-section-target="about" class="reveal">
-            <rect class="st120" x="72" y="1650" width="1296" height="510" rx="10.98" ry="10.98"/>
-            <text class="st22" transform="translate(126 1712)">
-              <tspan x="0" y="0" data-text="about_eyebrow">02 — ARCHITECTURE</tspan>
-            </text>
-            <text class="st35" transform="translate(126 1772)">
-              <tspan x="0" y="0" data-text="about_title">One core. Independent extensions.</tspan>
-            </text>
-            <rect class="sweep-line" x="128" y="1794" width="215" height="2" fill="#91b9c2" opacity=".75"/>
-            <text class="st46" transform="translate(126 1810)">
-              <tspan x="0" y="0" data-text="about_desc">A simple visual model of ElectroPy's extensible launcher.</tspan>
-            </text>
-
-            <g class="arch-block reveal" style="--rd:130ms">
-              <rect class="st108" x="157" y="1875" width="300" height="118"/>
-              <text class="st40" transform="translate(185 1920)">
-                <tspan x="0" y="0" data-text="about_core_label">CORE APPLICATION</tspan>
-              </text>
-              <text class="st32" transform="translate(185 1955)">
-                <tspan x="0" y="0" data-text="about_core_name">ElectroPy Launcher</tspan>
-              </text>
-            </g>
-            <path class="st82" d="M457,1934h105"/>
-            <path class="st83" d="M550,1924l14,10-14,10"/>
-
-            <g class="arch-block reveal" style="--rd:250ms">
-              <rect class="st1" x="592" y="1855" width="280" height="78"/>
-              <text class="st26" transform="translate(616 1887)">
-                <tspan x="0" y="0" data-text="about_ext_label">EXTENSION</tspan>
-              </text>
-              <text class="st48" transform="translate(616 1913)">
-                <tspan x="0" y="0" data-text="about_ext_resistor">Resistor</tspan>
-              </text>
-            </g>
-
-            <g class="arch-block reveal" style="--rd:360ms">
-              <rect class="st0" x="592" y="1954" width="280" height="78"/>
-              <text class="st26" transform="translate(616 1986)">
-                <tspan x="0" y="0" data-text="about_ext_label">EXTENSION</tspan>
-              </text>
-              <text class="st48" transform="translate(616 2012)">
-                <tspan x="0" y="0" data-text="about_ext_capacitor">Capacitor</tspan>
-              </text>
-            </g>
-
-            <path class="st83" d="M562,1934v59M562,1934h30M562,1993h30"/>
-
-            <g>
-              <text class="st66" transform="translate(947 1875)">
-                <tspan x="0" y="0" data-text="about_design_label">DESIGN LANGUAGE</tspan>
-              </text>
-              <text class="st9" transform="translate(947 1913)">
-                <tspan x="0" y="0" data-text="about_design_1">Independent</tspan>
-              </text>
-              <text class="st9" transform="translate(947 1942)">
-                <tspan x="0" y="0" data-text="about_design_2">Focused</tspan>
-              </text>
-              <text class="st9" transform="translate(947 1971)">
-                <tspan x="0" y="0" data-text="about_design_3">Expandable</tspan>
-              </text>
-              <path class="st118" d="M947,2001h260"/>
-              <text class="st11" transform="translate(947 2030)">
-                <tspan x="0" y="0" data-text="about_design_desc">Technical surfaces, simple hierarchy.</tspan>
-              </text>
-            </g>
-          </g>
-
-          <!-- ===== THE PROJECT ===== -->
-          <g class="reveal">
-            <text class="st65" transform="translate(72 2250)">
-              <tspan x="0" y="0" data-text="project_eyebrow">03 — THE PROJECT</tspan>
-            </text>
-            <g>
-              <text class="st52" transform="translate(72 2302)">
-                <tspan x="0" y="0" data-text="project_title">Built by Parkam Development Team.</tspan>
-              </text>
-              <rect class="sweep-line" x="74" y="2324" width="215" height="2" fill="#91b9c2" opacity=".7"/>
-              <text class="st49" transform="translate(72 2372)">
-                <tspan x="0" y="0" data-text="project_desc_line1">ElectroPy is an independent software project focused on making</tspan>
-              </text>
-              <text class="st49" transform="translate(72 2401)">
-                <tspan x="0" y="0" data-text="project_desc_line2">electronics utilities easier to access and use on Windows.</tspan>
-              </text>
-            </g>
-
-            <g class="proj-panel reveal" style="--rd:140ms">
-              <path class="st108" d="M72,2445h625v149.38c0,55.53-45.09,100.62-100.62,100.62H72v-250h0Z"/>
-              <text class="st51" transform="translate(110 2497)">
-                <tspan x="0" y="0" data-text="project_identity_label">PROJECT IDENTITY</tspan>
-              </text>
-              <text class="st30" transform="translate(110 2550)">
-                <tspan x="0" y="0" data-text="project_identity_name">ElectroPy</tspan>
-              </text>
-              <text class="st61" transform="translate(110 2590)">
-                <tspan x="0" y="0" data-text="project_identity_team">Parkam Development Team</tspan>
-              </text>
-              <path class="st125" d="M110,2625h520"/>
-              <text class="st47" transform="translate(110 2660)">
-                <tspan x="0" y="0" data-text="project_identity_tags">Windows • Desktop • Electronics</tspan>
-              </text>
-            </g>
-
-            <g class="proj-panel reveal" style="--rd:280ms">
-              <path class="st91" d="M837.62,2445h530.38v250h-631v-149.38c0-55.53,45.09-100.62,100.62-100.62Z"/>
-              <text class="st13" transform="translate(807 2509)">
-                <tspan x="0" y="0" data-text="project_designed_label">DESIGNED FOR</tspan>
-              </text>
-              <text class="st62" transform="translate(807 2558)">
-                <tspan x="0" y="0" data-text="project_designed_title">Students &amp; electronics enthusiasts</tspan>
-              </text>
-              <text class="st46" transform="translate(807 2599)">
-                <tspan x="0" y="0" data-text="project_designed_desc_line1">A focused interface that keeps the useful parts</tspan>
-              </text>
-              <text class="st46" transform="translate(807 2627)">
-                <tspan x="0" y="0" data-text="project_designed_desc_line2">close and the unnecessary complexity away.</tspan>
-              </text>
-            </g>
-          </g>
-
-          <!-- ===== DOWNLOAD ===== -->
-          <g id="downloadSection" data-section-target="download" class="reveal">
-            <path class="st104" d="M72,2805h1164.42c72.67,0,131.58,58.91,131.58,131.58v378.42H72v-510Z"/>
-            <path class="st58" d="M72,2805h1026.71l-290.34,510H72v-510Z"/>
-            <text class="st54" transform="translate(134 2875)">
-              <tspan x="0" y="0" data-text="download_eyebrow">04 — GET ELECTROPY</tspan>
-            </text>
-            <text class="st38" transform="translate(134 2950)">
-              <tspan x="0" y="0" data-text="download_title">Ready to try it?</tspan>
-            </text>
-            <rect class="sweep-line" x="136" y="2972" width="150" height="2" fill="#91b9c1" opacity=".8"/>
-            <text class="st31" transform="translate(134 2992)">
-              <tspan x="0" y="0" data-text="download_desc">Download the Windows application and explore its practical tools.</tspan>
-            </text>
-
-            <g class="reveal" style="--rd:140ms">
-              <g class="st90 dl-card-glow">
-                <rect class="st114" x="134" y="3052" width="1087.33" height="174"/>
-              </g>
-              <text class="st70" transform="translate(168 3099)">
-                <tspan x="0" y="0" data-text="download_card_label">LATEST WINDOWS BUILD</tspan>
-              </text>
-              <text class="st43" transform="translate(165 3145)">
-                <tspan x="0" y="0" data-text="download_card_title">ElectroPy for Windows</tspan>
-              </text>
-              <text class="st24" transform="translate(168 3193)">
-                <tspan x="0" y="0" data-text="download_card_meta">Version • File size • Release date</tspan>
-              </text>
-              <!-- ===== دکمه دانلود اصلی — تنها دکمه‌ای که به لینک دانلود می‌رود ===== -->
-              <g id="bigDownloadBtn" class="btn-g dl-pulse" data-action="download">
-                <rect x="852" y="3106" width="316" height="82" fill="transparent"/>
-                <text class="st42" transform="translate(875.5229 3151.6895)">
-                  <tspan class="st80" x="0" y="0" data-text="download_card_btn">Download </tspan>
-                  <tspan class="st106" x="172.71" y="0">↗</tspan>
-                </text>
-              </g>
-            </g>
-
-            <text class="st56" transform="translate(134 3270)">
-              <tspan x="0" y="0" data-text="download_footer">Windows desktop application • English / </tspan>
-              <tspan x="234.7427" y="0">فارسی</tspan>
-            </text>
-          </g>
-
-          <!-- ===== FOOTER ===== -->
-          <g class="reveal">
-            <path class="st112" d="M72,3370h1296"/>
-            <text class="st69" transform="translate(72 3418)">
-              <tspan x="0" y="0" data-text="footer_brand">ElectroPy</tspan>
-            </text>
-            <text class="st60" transform="translate(72 3443)">
-              <tspan x="0" y="0" data-text="footer_team">Parkam Development Team</tspan>
-            </text>
-            <g>
-              <text class="st4 footer-link" data-nav="home" transform="translate(1077 3416)">
-                <tspan x="0" y="0" data-text="footer_nav_home">Home</tspan>
-              </text>
-              <text class="st4 footer-link" data-nav="features" transform="translate(1147 3416)">
-                <tspan x="0" y="0" data-text="footer_nav_features">Features</tspan>
-              </text>
-              <text class="st4 footer-link" data-nav="download" transform="translate(1222 3416)">
-                <tspan x="0" y="0" data-text="footer_nav_download">Download</tspan>
-              </text>
-              <text class="st4 footer-link" data-action="lang" transform="translate(1312 3416)">
-                <tspan x="0" y="0" data-text="footer_nav_lang">EN / FA</tspan>
-              </text>
-            </g>
-            <text class="st2" transform="translate(72 3495)">
-              <tspan x="0" y="0" data-text="footer_tagline">ELECTROPY — DESKTOP ELECTRONICS TOOLKIT</tspan>
-            </text>
-            <text class="st41" transform="translate(621.2542 3572.6587)">
-              <tspan x="0" y="0" data-text="footer_copyright">©Parkam. 2026 All rights reserved.</tspan>
-            </text>
-          </g>
-
-          <!-- ============================================================
-               DESKTOP PREVIEW IMAGE
-               - هاله کرم: دقیقاً هم‌اندازه عکس، پشتش، با blur
-               - عکس: opacity کامل، گوشه‌های گرد
-               ============================================================ -->
-          <g>
-            <!-- هاله کرم: دقیقاً همون x,y,w,h,rx عکس، فقط blur شده -->
-            <rect x="544" y="519" width="807" height="415" rx="24" ry="24"
-                  fill="#f4efe6" filter="url(#haloBlur)"/>
-            <!-- عکس اصلی با گوشه‌های گرد و opacity کامل -->
-            <g clip-path="url(#desktopImgClip)">
-              <image
-                     width="807" height="495"
-                     transform="translate(544 479)"
-                     xlink:href="./assets/images/preview.webp"/>
-            </g>
-          </g>
-
-          <g class="st130">
-            <rect class="st74 float-rect" x="444.83" y="701.83" width="60.76" height="60.76"/>
-            <rect class="st74 float-rect" x="378.58" y="720.89" width="50.56" height="50.56"/>
-            <rect class="st74 float-rect" x="425.53" y="798.4" width="38.79" height="38.79"/>
-            <rect class="st74 float-rect" x="353.3" y="832.71" width="45.46" height="45.46"/>
-            <rect class="st74 float-rect" x="310.99" y="768.71" width="27.45" height="27.45"/>
-            <rect class="st74 float-rect" x="361.82" y="792.66" width="22.49" height="22.49"/>
-          </g>
-        </g>
-      </g>
-    </svg>
-  </div>
-
-  <!-- ===== MOBILE SVG ===== -->
-  <div class="page-mobile">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 3600" preserveAspectRatio="xMidYMid meet" style="font-family:'Segoe UI', Tahoma, sans-serif">
-      <defs>
-        <linearGradient id="m-hero-gradient" x1="0" y1="0" x2="0.75" y2="1">
-          <stop offset="0" stop-color="#071321"/>
-          <stop offset="1" stop-color="#10283b"/>
-        </linearGradient>
-        <pattern id="m-grid" x="0" y="0" width="36" height="36" patternUnits="userSpaceOnUse">
-          <path d="M36 36H0V0" fill="none" stroke="#9fb3bf" stroke-opacity=".12"/>
-        </pattern>
-        <!-- ===== CLIP PATH موبایل ===== -->
-        <clipPath id="mobileImgClip">
-          <rect x="40" y="488" width="350" height="215" rx="20" ry="20"/>
-        </clipPath>
-        <!-- ===== فیلتر BLUR برای هاله موبایل ===== -->
-        <filter id="haloBlurM" x="-15%" y="-15%" width="130%" height="130%">
-          <feGaussianBlur stdDeviation="9"/>
-        </filter>
-      </defs>
-
-      <rect width="430" height="3600" fill="#eee9df"/>
-      <rect width="430" height="3600" fill="url(#m-grid)"/>
-
-      <!-- HERO -->
-      <g>
-        <rect x="16" y="24" width="398" height="730" rx="20" fill="url(#m-hero-gradient)"/>
-        <rect x="16" y="24" width="398" height="730" rx="20" fill="url(#m-grid)" opacity=".75"/>
-        <text class="hero-el" style="--hd:120ms" x="40" y="76" font-size="11.5" font-weight="700" letter-spacing="2" fill="#8fbac7">
-          <tspan data-text="hero_eyebrow">DESKTOP ELECTRONICS TOOLKIT</tspan>
-        </text>
-        <text class="hero-el" style="--hd:260ms" x="40" y="143" font-size="44" font-weight="900" letter-spacing="-.5" fill="#f5f1e8">
-          <tspan data-text="hero_title">Electropy</tspan>
-        </text>
-        <text class="hero-el" style="--hd:420ms" x="40" y="186" font-size="24" fill="#f5f1e8">
-          <tspan data-text="hero_subtitle">Electronics, made practical.</tspan>
-        </text>
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" class="hero-el" style="--hd:560ms" x="40" y="220" font-size="13" fill="#b8c6ca">
-          <tspan data-text="hero_desc_line1">A focused Windows toolkit for practical electronics calculations —</tspan>
-        </text>
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" class="hero-el" style="--hd:610ms" x="40" y="240" font-size="13" fill="#b8c6ca">
-          <tspan data-text="hero_desc_line2">built around a clean, extensible desktop experience.</tspan>
-        </text>
-
-        <g class="hero-el" style="--hd:800ms">
-          <g id="heroDownloadBtnM" class="btn-g" data-action="scroll-download">
-            <rect x="40" y="292" width="350" height="52" rx="6" fill="#b8d7dc"/>
-            <text x="215" y="323" text-anchor="middle" font-size="14" font-weight="700" fill="#0a1b29" style="pointer-events:none">
-              <tspan data-text="hero_btn_download">Download ElectroPy ↗</tspan>
-            </text>
-          </g>
-          <g id="heroExploreBtnM" class="btn-outline-g" data-action="explore">
-            <rect class="btn-outline" x="40" y="356" width="350" height="52" rx="6" fill="transparent" stroke="#8ba0a9"/>
-            <text x="215" y="387" text-anchor="middle" font-size="14" fill="#e9eee9" style="pointer-events:none">
-              <tspan data-text="hero_btn_explore">Explore features</tspan>
-            </text>
-          </g>
-        </g>
-
-        <g class="hero-el" style="--hd:920ms">
-          <circle cx="45" cy="428" r="4" fill="#9cc4cc"/>
-          <text x="57" y="432" font-size="12" fill="#aebdc1">
-            <tspan data-text="hero_badge_os">Windows desktop application</tspan>
-          </text>
-          <circle cx="45" cy="456" r="4" fill="#9cc4cc"/>
-          <text x="57" y="460" font-size="12" fill="#aebdc1">
-            <tspan data-text="hero_badge_lang_1">English /</tspan>
-            <tspan data-text="hero_badge_lang_2"> فارسی</tspan>
-          </text>
-        </g>
-
-        <!-- ============================================================
-             MOBILE PREVIEW IMAGE — halo (blur) + rounded corners + full opacity
-             ============================================================ -->
-        <g>
-          <!-- هاله کرم: دقیقاً همون x,y,w,h,rx عکس، فقط blur شده -->
-          <rect x="42" y="508" width="344" height="175" rx="20" ry="20"
-                fill="#f4efe6" filter="url(#haloBlurM)"/>
-          <!-- عکس اصلی با گوشه‌های گرد و opacity کامل -->
-          <g clip-path="url(#mobileImgClip)">
-            <image width="350" height="215"
-                   transform="translate(40 488)"
-                   xlink:href="./assets/images/preview.webp"/>
-          </g>
-        </g>
-
-        <g opacity=".83">
-          <rect class="float-rect" x="336" y="462" width="30" height="30" fill="#eee9df" stroke="#172b39" stroke-opacity=".22"/>
-          <rect class="float-rect" x="366" y="496" width="24" height="24" fill="#eee9df" stroke="#172b39" stroke-opacity=".22"/>
-          <rect class="float-rect" x="306" y="486" width="20" height="20" fill="#eee9df" stroke="#172b39" stroke-opacity=".22"/>
-          <rect class="float-rect" x="322" y="470" width="14" height="14" fill="#eee9df" stroke="#172b39" stroke-opacity=".22"/>
-        </g>
-      </g>
-
-      <!-- FEATURES -->
-      <g data-section-target="features" class="reveal">
-        <text x="24" y="852" font-size="13" font-weight="700" letter-spacing="2.2" fill="#58737c">
-          <tspan data-text="features_eyebrow">01 — WHY ELECTROPY</tspan>
-        </text>
-        <text x="24" y="892" font-size="30" font-weight="700" letter-spacing="-.8" fill="#122b39">
-          <tspan data-text="features_title">Tools without</tspan>
-        </text>
-        <text x="24" y="930" font-size="30" font-weight="700" letter-spacing="-.8" fill="#122b39">
-          <tspan>the clutter.</tspan>
-        </text>
-        <rect class="sweep-line" x="26" y="946" width="120" height="2" fill="#91b9c2" opacity=".7"/>
-        <text x="24" y="962" font-size="14" fill="#64737a">
-          <tspan>A practical desktop environment</tspan>
-        </text>
-        <text x="24" y="984" font-size="14" fill="#64737a">
-          <tspan>built around focused electronics utilities.</tspan>
-        </text>
-
-        <g class="feature-card reveal" style="--rd:120ms">
-          <rect x="20" y="1020" width="390" height="168" fill="#f5f1e9" stroke="#8b9ba0" stroke-opacity=".55"/>
-          <rect x="20.6" y="1020.6" width="388.8" height="6" fill="#183747"/>
-          <text x="48" y="1066" font-size="13" font-weight="700" letter-spacing="2.4" fill="#6c858d">
-            <tspan data-text="feature_1_num">01</tspan>
-          </text>
-          <text x="48" y="1098" font-size="22" font-weight="700" fill="#17313f">
-            <tspan data-text="feature_1_title">Practical tools</tspan>
-          </text>
-          <text x="48" y="1124" font-size="13.5" fill="#627278">
-            <tspan data-text="feature_1_desc_line1">Focused calculators for everyday</tspan>
-          </text>
-          <text x="48" y="1146" font-size="13.5" fill="#627278">
-            <tspan data-text="feature_1_desc_line2">electronics work.</tspan>
-          </text>
-          <path class="deco-cross" d="M318 1158h30M333 1143v30" stroke="#8eabb3" stroke-width="2"/>
-          <circle class="deco-dot" cx="333" cy="1158" r="7" fill="#183747"/>
-        </g>
-
-        <g class="feature-card reveal" style="--rd:240ms">
-          <rect x="20" y="1204" width="390" height="168" fill="#102b3a"/>
-          <rect x="20.6" y="1204.6" width="388.8" height="6" fill="#f5f1e9"/>
-          <text x="48" y="1250" font-size="13" font-weight="700" letter-spacing="2.4" fill="#9cc4cb">
-            <tspan data-text="feature_2_num">02</tspan>
-          </text>
-          <text x="48" y="1282" font-size="22" font-weight="700" fill="#f2eee5">
-            <tspan data-text="feature_2_title">Extensible by design</tspan>
-          </text>
-          <text x="48" y="1308" font-size="13.5" fill="#b4c3c6">
-            <tspan data-text="feature_2_desc_line1">The launcher can load independent</tspan>
-          </text>
-          <text x="48" y="1330" font-size="13.5" fill="#b4c3c6">
-            <tspan data-text="feature_2_desc_line2">extensions at runtime.</tspan>
-          </text>
-          <rect x="312" y="1334" width="34" height="24" fill="#b8d4d7"/>
-          <rect x="358" y="1334" width="34" height="24" fill="#b8d4d7"/>
-          <path class="launcher-line" d="M346 1346h12" stroke="#b8d4d7" stroke-width="2"/>
-        </g>
-
-        <g class="feature-card reveal" style="--rd:360ms">
-          <rect x="20" y="1388" width="390" height="168" fill="#f5f1e9" stroke="#8b9ba0" stroke-opacity=".55"/>
-          <rect x="20.6" y="1388.6" width="388.8" height="6" fill="#183747"/>
-          <text x="48" y="1434" font-size="13" font-weight="700" letter-spacing="2.4" fill="#6c858d">
-            <tspan data-text="feature_3_num">03</tspan>
-          </text>
-          <text x="48" y="1466" font-size="22" font-weight="700" fill="#17313f">
-            <tspan data-text="feature_3_title">Bilingual interface</tspan>
-          </text>
-          <text x="48" y="1492" font-size="13.5" fill="#627278">
-            <tspan data-text="feature_3_desc_line1">English and Persian support with</tspan>
-          </text>
-          <text x="48" y="1514" font-size="13.5" fill="#627278">
-            <tspan data-text="feature_3_desc_line2">a natural RTL / LTR system.</tspan>
-          </text>
-          <g class="deco-lang">
-            <text x="310" y="1526" font-size="22" font-weight="700" fill="#173747">
-              <tspan>EN</tspan>
-            </text>
-            <text x="348" y="1526" font-size="19" fill="#8ca1a6">
-              <tspan>فا</tspan>
-            </text>
-          </g>
-        </g>
-      </g>
-
-      <!-- ABOUT -->
-      <g data-section-target="about" class="reveal">
-        <rect x="16" y="1588" width="398" height="660" rx="16" fill="#e5e1d8" stroke="#8e9da1" stroke-opacity=".5"/>
-        <text x="40" y="1632" font-size="13" font-weight="700" letter-spacing="2.2" fill="#627b83">
-          <tspan data-text="about_eyebrow">02 — ARCHITECTURE</tspan>
-        </text>
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="1668" font-size="24" font-weight="400" letter-spacing="-.8" fill="#132d3b">
-          <tspan data-text="about_title">One core. Independent extensions.</tspan>
-        </text>
-        <rect class="sweep-line" x="42" y="1716" width="130" height="2" fill="#91b9c2" opacity=".75"/>
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="1730" font-size="13" fill="#65747a">
-          <tspan data-text="about_desc">A simple visual model of ElectroPy's extensible launcher.</tspan>
-        </text>
-
-        <g class="arch-block reveal" style="--rd:130ms">
-          <rect x="40" y="1776" width="350" height="96" fill="#102b3a"/>
-          <text x="64" y="1812" font-size="11" font-weight="700" letter-spacing="1.6" fill="#91b9c2">
-            <tspan data-text="about_core_label">CORE APPLICATION</tspan>
-          </text>
-          <text x="64" y="1846" font-size="20" font-weight="700" fill="#f3eee5">
-            <tspan data-text="about_core_name">ElectroPy Launcher</tspan>
-          </text>
-        </g>
-        <path d="M215 1872v34" stroke="#486571" stroke-width="3"/>
-        <polygon points="208,1898 222,1898 215,1911" fill="#486571"/>
-
-        <g class="arch-block reveal" style="--rd:250ms">
-          <rect x="40" y="1916" width="350" height="66" fill="#f7f3ea" stroke="#71868d"/>
-          <text x="64" y="1942" font-size="10.5" font-weight="700" letter-spacing="1.4" fill="#617980">
-            <tspan data-text="about_ext_label">EXTENSION</tspan>
-          </text>
-          <text x="64" y="1966" font-size="17" font-weight="700" fill="#193341">
-            <tspan data-text="about_ext_resistor">Resistor</tspan>
-          </text>
-        </g>
-
-        <g class="arch-block reveal" style="--rd:360ms">
-          <rect x="40" y="1994" width="350" height="66" fill="#cfe2e3" stroke="#71868d"/>
-          <text x="64" y="2020" font-size="10.5" font-weight="700" letter-spacing="1.4" fill="#617980">
-            <tspan data-text="about_ext_label">EXTENSION</tspan>
-          </text>
-          <text x="64" y="2044" font-size="17" font-weight="700" fill="#193341">
-            <tspan data-text="about_ext_capacitor">Capacitor</tspan>
-          </text>
-        </g>
-
-        <text x="40" y="2094" font-size="11" font-weight="700" letter-spacing="1.6" fill="#647980">
-          <tspan data-text="about_design_label">DESIGN LANGUAGE</tspan>
-        </text>
-        <text x="40" y="2124" font-size="17" font-weight="700" fill="#193341">
-          <tspan data-text="about_design_1">Independent</tspan>
-        </text>
-        <text x="40" y="2148" font-size="17" font-weight="700" fill="#193341">
-          <tspan data-text="about_design_2">Focused</tspan>
-        </text>
-        <text x="40" y="2172" font-size="17" font-weight="700" fill="#193341">
-          <tspan data-text="about_design_3">Expandable</tspan>
-        </text>
-        <path d="M40 2188h200" stroke="#9aabad"/>
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="2210" font-size="12" fill="#66777c">
-          <tspan data-text="about_design_desc">Technical surfaces, simple hierarchy.</tspan>
-        </text>
-      </g>
-
-      <!-- THE PROJECT -->
-      <g class="reveal">
-        <text x="24" y="2296" font-size="13" font-weight="700" letter-spacing="2.2" fill="#58737c">
-          <tspan data-text="project_eyebrow">03 — THE PROJECT</tspan>
-        </text>
-        <text textLength="366" lengthAdjust="spacingAndGlyphs" x="24" y="2334" font-size="28" font-weight="700" letter-spacing="-.8" fill="#122b39">
-          <tspan data-text="project_title">Built by Parkam Development Team.</tspan>
-        </text>
-        <rect class="sweep-line" x="26" y="2386" width="150" height="2" fill="#91b9c2" opacity=".7"/>
-        <text textLength="366" lengthAdjust="spacingAndGlyphs" x="24" y="2400" font-size="13" fill="#64737a">
-          <tspan data-text="project_desc_line1">ElectroPy is an independent software project focused on making</tspan>
-        </text>
-        <text textLength="366" lengthAdjust="spacingAndGlyphs" x="24" y="2421" font-size="13" fill="#64737a">
-          <tspan data-text="project_desc_line2">electronics utilities easier to access and use on Windows.</tspan>
-        </text>
-
-        <g class="proj-panel reveal" style="--rd:140ms">
-          <rect x="16" y="2468" width="398" height="176" rx="14" fill="#102b3a"/>
-          <text x="40" y="2508" font-size="11" font-weight="700" letter-spacing="1.6" fill="#9fc2c8">
-            <tspan data-text="project_identity_label">PROJECT IDENTITY</tspan>
-          </text>
-          <text x="40" y="2546" font-size="26" font-weight="700" fill="#f4efe6">
-            <tspan data-text="project_identity_name">ElectroPy</tspan>
-          </text>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="2574" font-size="15" fill="#aebdc0">
-            <tspan data-text="project_identity_team">Parkam Development Team</tspan>
-          </text>
-          <path d="M40 2596h350" stroke="#607b84"/>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="2624" font-size="12" fill="#aebdc1">
-            <tspan data-text="project_identity_tags">Windows • Desktop • Electronics</tspan>
-          </text>
-        </g>
-
-        <g class="proj-panel reveal" style="--rd:280ms">
-          <rect x="16" y="2660" width="398" height="190" rx="14" fill="#f5f1e9" stroke="#87999e"/>
-          <text x="40" y="2696" font-size="11" font-weight="700" letter-spacing="1.6" fill="#657980">
-            <tspan data-text="project_designed_label">DESIGNED FOR</tspan>
-          </text>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="2726" font-size="20" font-weight="700" fill="#17313f">
-            <tspan data-text="project_designed_title">Students &amp; electronics</tspan>
-          </text>
-          <text x="40" y="2752" font-size="20" font-weight="700" fill="#17313f">
-            <tspan>enthusiasts</tspan>
-          </text>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="2782" font-size="12.5" fill="#65747a">
-            <tspan data-text="project_designed_desc_line1">A focused interface that keeps the useful parts</tspan>
-          </text>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="2804" font-size="12.5" fill="#65747a">
-            <tspan data-text="project_designed_desc_line2">close and the unnecessary</tspan>
-          </text>
-          <text x="40" y="2826" font-size="12.5" fill="#65747a">
-            <tspan>complexity away.</tspan>
-          </text>
-        </g>
-      </g>
-
-      <!-- DOWNLOAD -->
-      <g id="downloadSectionM" data-section-target="download" class="reveal">
-        <rect x="16" y="2882" width="398" height="470" rx="18" fill="#0a1d2b"/>
-        <rect x="16" y="2882" width="398" height="470" rx="18" fill="url(#m-grid)" opacity=".5"/>
-        <text x="40" y="2930" font-size="13" font-weight="700" letter-spacing="2.2" fill="#91b9c1">
-          <tspan data-text="download_eyebrow">04 — GET ELECTROPY</tspan>
-        </text>
-        <text x="40" y="2978" font-size="30" fill="#f4efe5">
-          <tspan data-text="download_title">Ready to try it?</tspan>
-        </text>
-        <rect class="sweep-line" x="42" y="2994" width="95" height="2" fill="#91b9c1" opacity=".8"/>
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="3012" font-size="13" fill="#b6c4c6">
-          <tspan data-text="download_desc">Download the Windows application and explore its practical tools.</tspan>
-        </text>
-
-        <g class="dl-card-glow reveal" style="--rd:140ms">
-          <rect x="40" y="3062" width="350" height="200" rx="12" fill="#f4efe5"/>
-          <text x="64" y="3104" font-size="11" font-weight="700" letter-spacing="1.6" fill="#687a80">
-            <tspan data-text="download_card_label">LATEST WINDOWS BUILD</tspan>
-          </text>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="64" y="3140" font-size="22" font-weight="700" fill="#15303e">
-            <tspan data-text="download_card_title">ElectroPy for Windows</tspan>
-          </text>
-          <text textLength="350" lengthAdjust="spacingAndGlyphs" x="64" y="3166" font-size="12" fill="#69797e">
-            <tspan data-text="download_card_meta">Version • File size • Release date</tspan>
-          </text>
-          <!-- ===== دکمه دانلود اصلی موبایل ===== -->
-          <g id="bigDownloadBtnM" class="btn-g dl-pulse" data-action="download">
-            <rect x="56" y="3184" width="200" height="56" fill="transparent"/>
-            <text x="64" y="3226" font-size="26" font-weight="700" fill="#102332" style="pointer-events:none">
-              <tspan data-text="download_card_btn">Download ↗</tspan>
-            </text>
-          </g>
-        </g>
-
-        <text textLength="350" lengthAdjust="spacingAndGlyphs" x="40" y="3296" font-size="12" fill="#80989f">
-          <tspan data-text="download_footer">Windows desktop application • English / فارسی</tspan>
-        </text>
-      </g>
-
-      <!-- FOOTER -->
-      <g class="reveal">
-        <path d="M20 3396h390" stroke="#819399"/>
-        <text x="20" y="3438" font-size="18" font-weight="700" fill="#17303e">
-          <tspan data-text="footer_brand">ElectroPy</tspan>
-        </text>
-        <text textLength="390" lengthAdjust="spacingAndGlyphs" x="20" y="3460" font-size="12" fill="#687980">
-          <tspan data-text="footer_team">Parkam Development Team</tspan>
-        </text>
-        <text class="footer-link" data-nav="home" x="20" y="3496" font-size="13" fill="#52666e">
-          <tspan data-text="footer_nav_home">Home</tspan>
-        </text>
-        <text class="footer-link" data-nav="features" x="78" y="3496" font-size="13" fill="#52666e">
-          <tspan data-text="footer_nav_features">Features</tspan>
-        </text>
-        <text class="footer-link" data-nav="download" x="164" y="3496" font-size="13" fill="#52666e">
-          <tspan data-text="footer_nav_download">Download</tspan>
-        </text>
-        <text class="footer-link" data-action="lang" x="258" y="3496" font-size="13" fill="#52666e">
-          <tspan data-text="footer_nav_lang">EN / FA</tspan>
-        </text>
-        <text textLength="390" lengthAdjust="spacingAndGlyphs" x="20" y="3534" font-size="9" letter-spacing="1.6" fill="#8a999d">
-          <tspan data-text="footer_tagline">ELECTROPY — DESKTOP ELECTRONICS TOOLKIT</tspan>
-        </text>
-        <text textLength="390" lengthAdjust="spacingAndGlyphs" x="20" y="3566" font-size="9.5" font-style="italic" font-weight="300" letter-spacing="1.6" fill="#8a999d">
-          <tspan data-text="footer_copyright">©Parkam. 2026 All rights reserved.</tspan>
-        </text>
-      </g>
-    </svg>
-  </div>
-</main>
-
-<!-- ========== TOAST ========== -->
-<div class="toast" id="toast" role="status">
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/></svg>
-  <span id="toastMessage"></span>
-</div>
-
-<!-- ========== SCROLL PROGRESS ========== -->
-<div class="scroll-progress" id="scrollProgress"></div>
-
-<!-- ========== RESISTOR CURSOR ========== -->
-<canvas class="cursor-stage" id="resistorStage"></canvas>
-<div class="resistor-shadow" id="resistorShadow"></div>
-<div class="resistor-body" id="resistorBody"></div>
-
-<!-- ============================================================
-     VANILLA JS
-     ============================================================ -->
 <script>
-(function() {
+(function () {
   'use strict';
 
-  /* ============================================================
-     🔗 LINKS — همه لینک‌ها اینجا تعریف می‌شن
-     ============================================================ */
-  var GITHUB_URL = "https://github.com/PAforge-dev-team/Electropy";
-  var DOWNLOAD_URL = "https://github.com/PAforge-dev-team/Electropy/releases/download/Electropy/Electropy_V1.0.0+2Exts.zip";
+  // Target: Monday, November 9, 2026 — 18:00 Iran Time (UTC+3:30)
+  var TARGET = new Date('2026-11-09T18:00:00+03:30').getTime();
 
-  /* ---------- TEXT INJECTION (from texts.js) ---------- */
-  if (window.TEXTS) {
-    document.querySelectorAll('[data-text]').forEach(function(el) {
-      var key = el.getAttribute('data-text');
-      if (window.TEXTS[key] !== undefined) {
-        el.textContent = window.TEXTS[key];
-      } else {
-        console.warn('[texts.js] Missing key:', key);
-      }
-    });
-  }
+  var el = {
+    days:    document.getElementById('days'),
+    hours:   document.getElementById('hours'),
+    minutes: document.getElementById('minutes'),
+    seconds: document.getElementById('seconds'),
+    boxDays: document.getElementById('box-days'),
+    boxHours: document.getElementById('box-hours'),
+    boxMin:  document.getElementById('box-minutes'),
+    boxSec:  document.getElementById('box-seconds'),
+    grid:    document.getElementById('countdown'),
+    launched: document.getElementById('launched'),
+    status:  document.querySelector('.status-line')
+  };
 
-  var isTouchDevice =
-    window.matchMedia('(hover: none)').matches ||
-    window.matchMedia('(pointer: coarse)').matches ||
-    ('ontouchstart' in window && navigator.maxTouchPoints > 0);
-  var hoverFine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var prev = { d: null, h: null, m: null, s: null };
 
-  /* ---------- LOADER ---------- */
-  var loader = document.getElementById('loader');
-  function hideLoader() {
-    if (!loader.classList.contains('hidden')) {
-      loader.classList.add('hidden');
-      document.body.classList.add('loaded');
+  function pad(n) { return String(n).padStart(2, '0'); }
+
+  function tick(box, key, value) {
+    if (prev[key] !== value) {
+      prev[key] = value;
+      box.classList.remove('tick');
+      // force reflow so animation restarts
+      void box.offsetWidth;
+      box.classList.add('tick');
     }
   }
-  if (document.readyState === 'complete') {
-    setTimeout(hideLoader, 600);
-  } else {
-    window.addEventListener('load', function() {
-      setTimeout(hideLoader, 600);
-    });
-  }
-  setTimeout(hideLoader, 2200);
 
-  /* ---------- TOAST ---------- */
-  var toast = document.getElementById('toast');
-  var toastMessage = document.getElementById('toastMessage');
-  var toastTimer = null;
-  function showToast(msg) {
-    toastMessage.textContent = msg;
-    toast.classList.add('show');
-    if (toastTimer) clearTimeout(toastTimer);
-    toastTimer = setTimeout(function() {
-      toast.classList.remove('show');
-    }, 2600);
-  }
+  function update() {
+    var now = Date.now();
+    var diff = TARGET - now;
 
-  /* ---------- MENU ---------- */
-  var hamburger = document.getElementById('hamburger');
-  var mobileMenu = document.getElementById('mobileMenu');
-  var mobileBackdrop = document.getElementById('mobileBackdrop');
-  var menuOpen = false;
-
-  function toggleMenu() {
-    menuOpen = !menuOpen;
-    hamburger.classList.toggle('open', menuOpen);
-    mobileMenu.classList.toggle('open', menuOpen);
-    mobileBackdrop.classList.toggle('open', menuOpen);
-    mobileMenu.setAttribute('aria-hidden', !menuOpen);
-    document.body.classList.toggle('menu-open', menuOpen);
-  }
-  function closeMenu() {
-    if (!menuOpen) return;
-    menuOpen = false;
-    hamburger.classList.remove('open');
-    mobileMenu.classList.remove('open');
-    mobileBackdrop.classList.remove('open');
-    mobileMenu.setAttribute('aria-hidden', true);
-    document.body.classList.remove('menu-open');
-  }
-  hamburger.addEventListener('click', function(e) {
-    e.stopPropagation();
-    toggleMenu();
-  });
-  mobileBackdrop.addEventListener('click', closeMenu);
-
-  /* ---------- NAVIGATION ---------- */
-  function navigateTo(section) {
-    closeMenu();
-    if (section === 'home') {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (diff <= 0) {
+      el.grid.style.display = 'none';
+      el.launched.classList.add('show');
+      if (el.status) el.status.style.display = 'none';
       return;
     }
-    var targets = document.querySelectorAll('[data-section-target="' + section + '"]');
-    var top = 0;
-    var found = false;
-    targets.forEach(function(el) {
-      if (found) return;
-      var rect = el.getBoundingClientRect();
-      if (rect.width > 0 || rect.height > 0) {
-        found = true;
-        top = rect.top + window.scrollY;
-      }
-    });
-    if (!found) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      return;
-    }
-    var offset = window.innerWidth <= 880 ? 74 : 88;
-    window.scrollTo({ top: Math.max(0, top - offset), behavior: 'smooth' });
+
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+
+    el.days.textContent    = pad(d);
+    el.hours.textContent   = pad(h);
+    el.minutes.textContent = pad(m);
+    el.seconds.textContent = pad(s);
+
+    // little pop on each change
+    tick(el.boxDays, 'd', d);
+    tick(el.boxHours, 'h', h);
+    tick(el.boxMin, 'm', m);
+    tick(el.boxSec, 's', s);
   }
 
-  /* ---------- ACTIONS ---------- */
-  function handleScrollToDownload() {
-    navigateTo('download');
-    setTimeout(function() {
-      var els = document.querySelectorAll('.dl-pulse');
-      els.forEach(function(el) { el.classList.add('pulse'); });
-      setTimeout(function() {
-        els.forEach(function(el) { el.classList.remove('pulse'); });
-      }, 1700);
-    }, 600);
-  }
-
-  function handleActualDownload() {
-    var els = document.querySelectorAll('.dl-pulse');
-    els.forEach(function(el) { el.classList.add('pulse'); });
-    setTimeout(function() {
-      els.forEach(function(el) { el.classList.remove('pulse'); });
-    }, 1700);
-    showToast(window.TEXTS ? window.TEXTS.toast_downloading : 'Starting download...');
-    window.location.href = DOWNLOAD_URL;
-  }
-
-  function handleVisitGithub() {
-    showToast(window.TEXTS ? window.TEXTS.toast_visit_github : 'Opening GitHub repository...');
-    window.open(GITHUB_URL, '_blank', 'noopener');
-  }
-
-  function handleLang() {
-    showToast(window.TEXTS ? window.TEXTS.toast_lang : 'Persian UI is available inside the app.');
-  }
-
-  /* ---------- EVENT DELEGATION ---------- */
-  document.addEventListener('click', function(e) {
-    var navEl = e.target.closest ? e.target.closest('[data-nav]') : null;
-    if (navEl) {
-      e.preventDefault();
-      navigateTo(navEl.getAttribute('data-nav'));
-      return;
-    }
-    var actionEl = e.target.closest ? e.target.closest('[data-action]') : null;
-    if (actionEl) {
-      e.preventDefault();
-      var action = actionEl.getAttribute('data-action');
-      if (action === 'download') { handleActualDownload(); }
-      if (action === 'scroll-download') { handleScrollToDownload(); }
-      if (action === 'github') { handleVisitGithub(); }
-      if (action === 'lang') { handleLang(); }
-      if (action === 'explore') { navigateTo('features'); }
-    }
-  });
-
-  /* ---------- HEADER / SCROLL PROGRESS ---------- */
-  var stickyHeader = document.getElementById('stickyHeader');
-  var scrollProgress = document.getElementById('scrollProgress');
-  var ticking = false;
-
-  function onScroll() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(function() {
-      var isMobile = window.innerWidth <= 880 || isTouchDevice;
-      stickyHeader.classList.toggle('visible', isMobile || window.scrollY > 400);
-      var docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      var pct = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-      scrollProgress.style.width = pct + '%';
-      ticking = false;
-    });
-  }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
-
-  /* ---------- REVEAL ---------- */
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-
-  document.querySelectorAll('.reveal').forEach(function(el) {
-    observer.observe(el);
-  });
-
-  /* ============================================================
-     RESISTOR CURSOR
-     ============================================================ */
-  if (!isTouchDevice) {
-    var canvas = document.getElementById('resistorStage');
-    var ctx = canvas.getContext('2d');
-    var resistorEl = document.getElementById('resistorBody');
-    var shadowEl = document.getElementById('resistorShadow');
-
-    var W, H;
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    var mouse = { x: W / 2, y: H / 2 };
-    function setMouse(x, y) { mouse.x = x; mouse.y = y; }
-
-    var IDLE_TIMEOUT = 3000;
-    var idleTimer = null;
-    var cursorVisible = false;
-
-    function showCursor() {
-      if (!cursorVisible) {
-        cursorVisible = true;
-        canvas.classList.add('active');
-        resistorEl.classList.add('active');
-        shadowEl.classList.add('active');
-      }
-      if (idleTimer) clearTimeout(idleTimer);
-      idleTimer = setTimeout(hideCursor, IDLE_TIMEOUT);
-    }
-    function hideCursor() {
-      cursorVisible = false;
-      canvas.classList.remove('active');
-      resistorEl.classList.remove('active');
-      shadowEl.classList.remove('active');
-    }
-
-    window.addEventListener('mousemove', function(e) {
-      setMouse(e.clientX, e.clientY);
-      showCursor();
-    });
-    window.addEventListener('mousedown', showCursor);
-    window.addEventListener('click', showCursor);
-    window.addEventListener('scroll', showCursor, { passive: true });
-    window.addEventListener('wheel', showCursor, { passive: true });
-    window.addEventListener('keydown', showCursor);
-
-    var body = { x: W / 2, y: H / 2, heading: 0 };
-    var distanceTraveled = 0;
-
-    var CAPSULE_HALF_LEN = 18;
-    var CAPSULE_RADIUS = 7.5;
-    var LEG_UPPER = 11;
-    var LEG_LOWER = 12;
-    var ALONG_OFFSETS = [15, -1, -17];
-    var BASE_SIDE = CAPSULE_RADIUS * 0.95;
-    var STEP_FORWARD = 6.5;
-    var OUTWARD = 9;
-    var STEP_FREQ = 1 / 52;
-    var IDLE_CREEP = 0.10;
-
-    var legs = [];
-    ALONG_OFFSETS.forEach(function(along, segIndex) {
-      [-1, 1].forEach(function(side) {
-        var sideIndex = side === 1 ? 0 : 1;
-        var group = (segIndex + sideIndex) % 2;
-        legs.push({
-          along: along, side: side,
-          phaseOffset: group * 0.5,
-          state: 'stance',
-          footX: null, footY: null,
-          swingFromX: 0, swingFromY: 0, swingToX: 0, swingToY: 0
-        });
-      });
-    });
-
-    function twoBoneIK(bx, by, fx, fy, l1, l2, bendSign, bendScale) {
-      var dx = fx - bx, dy = fy - by;
-      var d = Math.hypot(dx, dy) || 0.0001;
-      var maxReach = l1 + l2 - 0.5;
-      if (d > maxReach) { dx = (dx / d) * maxReach; dy = (dy / d) * maxReach; d = maxReach; }
-      var a = Math.min(l1, Math.max(-l2, (l1 * l1 - l2 * l2 + d * d) / (2 * d)));
-      var h = Math.sqrt(Math.max(0, l1 * l1 - a * a)) * bendScale;
-      var mx = bx + (dx / d) * a, my = by + (dy / d) * a;
-      var px = -dy / d, py = dx / d;
-      return { kx: mx + px * h * bendSign, ky: my + py * h * bendSign, fx: bx + dx, fy: by + dy };
-    }
-
-    function lerp(a, b, t) { return a + (b - a) * t; }
-    function smoothstep(t) { return t * t * (3 - 2 * t); }
-
-    var lastX = body.x, lastY = body.y;
-    var resistorHalfW = resistorEl.offsetWidth / 2;
-    var resistorHalfH = resistorEl.offsetHeight / 2;
-    var shadowHalfW = shadowEl.offsetWidth / 2;
-    var shadowHalfH = shadowEl.offsetHeight / 2;
-    var SHADOW_DROP = 6;
-
-    function animate() {
-      var ease = 0.15;
-      body.x += (mouse.x - body.x) * ease;
-      body.y += (mouse.y - body.y) * ease;
-
-      var dx = body.x - lastX, dy = body.y - lastY;
-      var speed = Math.hypot(dx, dy);
-      lastX = body.x; lastY = body.y;
-
-      if (speed > 0.05) {
-        var targetHeading = Math.atan2(dy, dx);
-        var diff = targetHeading - body.heading;
-        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-        body.heading += diff * 0.16;
-      }
-
-      distanceTraveled += speed + IDLE_CREEP;
-
-      var fx = Math.cos(body.heading), fy = Math.sin(body.heading);
-      var nx = -fy, ny = fx;
-
-      ctx.clearRect(0, 0, W, H);
-      ctx.lineCap = 'round';
-      ctx.lineJoin = 'round';
-
-      ctx.strokeStyle = 'rgba(210, 210, 215, 0.7)';
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(body.x - fx * (CAPSULE_HALF_LEN + 11), body.y - fy * (CAPSULE_HALF_LEN + 11));
-      ctx.lineTo(body.x - fx * (CAPSULE_HALF_LEN - 3), body.y - fy * (CAPSULE_HALF_LEN - 3));
-      ctx.moveTo(body.x + fx * (CAPSULE_HALF_LEN - 3), body.y + fy * (CAPSULE_HALF_LEN - 3));
-      ctx.lineTo(body.x + fx * (CAPSULE_HALF_LEN + 11), body.y + fy * (CAPSULE_HALF_LEN + 11));
-      ctx.stroke();
-
-      legs.forEach(function(leg) {
-        var baseX = body.x + fx * leg.along + nx * BASE_SIDE * leg.side;
-        var baseY = body.y + fy * leg.along + ny * BASE_SIDE * leg.side;
-        var landX = baseX + fx * STEP_FORWARD + nx * OUTWARD * leg.side;
-        var landY = baseY + fy * STEP_FORWARD + ny * OUTWARD * leg.side;
-
-        var t = (distanceTraveled * STEP_FREQ + leg.phaseOffset) % 1;
-        var isSwing = t >= 0.5;
-
-        if (leg.footX === null) { leg.footX = landX; leg.footY = landY; }
-
-        if (isSwing && leg.state !== 'swing') {
-          leg.state = 'swing';
-          leg.swingFromX = leg.footX; leg.swingFromY = leg.footY;
-        }
-        if (!isSwing) leg.state = 'stance';
-
-        if (leg.state === 'swing') {
-          var p = smoothstep((t - 0.5) * 2);
-          leg.swingToX = landX; leg.swingToY = landY;
-          leg.footX = lerp(leg.swingFromX, leg.swingToX, p);
-          leg.footY = lerp(leg.swingFromY, leg.swingToY, p);
-        }
-
-        var bendScale = leg.state === 'swing' ? 1.35 : 0.75;
-        var bend = twoBoneIK(baseX, baseY, leg.footX, leg.footY, LEG_UPPER, LEG_LOWER, leg.side, bendScale);
-
-        var alpha = leg.state === 'swing' ? 0.9 : 0.5;
-        ctx.strokeStyle = 'rgba(130, 230, 200, ' + alpha + ')';
-        ctx.lineWidth = 1.8;
-        ctx.beginPath();
-        ctx.moveTo(baseX, baseY);
-        ctx.lineTo(bend.kx, bend.ky);
-        ctx.lineTo(bend.fx, bend.fy);
-        ctx.stroke();
-
-        if (leg.state === 'stance') {
-          ctx.beginPath();
-          ctx.arc(leg.footX, leg.footY, 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = 'rgba(130, 230, 200, 0.6)';
-          ctx.fill();
-        }
-      });
-
-      shadowEl.style.transform =
-        'translate(' + (body.x - shadowHalfW) + 'px, ' + (body.y + SHADOW_DROP - shadowHalfH) + 'px) rotate(' + body.heading + 'rad)';
-      resistorEl.style.transform =
-        'translate(' + (body.x - resistorHalfW) + 'px, ' + (body.y - resistorHalfH) + 'px) rotate(' + body.heading + 'rad)';
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-  }
-
-  /* ---------- CLICK RIPPLE ---------- */
-  function createRipple(x, y, touch) {
-    var ripple = document.createElement('div');
-    ripple.className = 'click-ripple' + (touch ? ' touch' : '');
-    ripple.style.left = x + 'px';
-    ripple.style.top = y + 'px';
-    document.body.appendChild(ripple);
-    setTimeout(function() { ripple.remove(); }, 900);
-  }
-  if (!isTouchDevice) {
-    document.addEventListener('pointerdown', function(e) {
-      createRipple(e.clientX, e.clientY, false);
-    });
-  }
-
-  /* ---------- KEYBOARD ---------- */
-  window.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-      if (menuOpen) closeMenu();
-      else window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  });
-
-  /* ---------- BUTTONS ---------- */
-  document.getElementById('brandBtn').addEventListener('click', function() {
-    navigateTo('home');
-  });
-  document.getElementById('headerGithubBtn').addEventListener('click', handleVisitGithub);
-  document.getElementById('mobileGithubBtn').addEventListener('click', handleVisitGithub);
-
-  /* ---------- RESIZE (close menu) ---------- */
-  window.addEventListener('resize', function() {
-    if (window.innerWidth > 880) closeMenu();
-  });
-
+  update();
+  setInterval(update, 1000);
 })();
 </script>
+
 </body>
 </html>
