@@ -29,6 +29,9 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+html, body { cursor: none; }
+body, body * { cursor: none !important; }
+
 body {
   min-height: 100vh;
   display: flex;
@@ -67,7 +70,6 @@ body {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* top strip — ink + accent, echoes site header */
 .countdown-card::before {
   content: '';
   display: block;
@@ -279,70 +281,48 @@ body {
   margin: 0 auto 1.2rem;
   max-width: 420px;
 }
-.tg-link {
+.tg-row {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   margin: 0 auto 1.6rem;
-  padding: 0.75rem 1.1rem;
-  max-width: 420px;
-  text-decoration: none;
-  background: rgba(207, 226, 227, 0.22);
-  border: 1px solid rgba(145, 185, 194, 0.55);
-  border-radius: 8px;
-  transition: transform .4s var(--ease-spring), box-shadow .4s ease,
-              border-color .35s ease, background .35s ease;
 }
-.tg-link:hover {
-  transform: translateY(-3px);
-  border-color: var(--accent);
-  background: rgba(207, 226, 227, 0.42);
-  box-shadow: 0 10px 26px rgba(16, 35, 50, 0.14);
-}
-.tg-link:active { transform: scale(.98); }
-
-.tg-icon {
-  width: 36px; height: 36px;
-  border-radius: 6px;
+.tg-logo-box {
+  width: 52px; height: 52px;
+  border-radius: 12px;
   background: var(--ink);
   color: var(--accent-2);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(11, 27, 42, 0.24);
   transition: transform .4s var(--ease-spring), background .35s ease;
 }
-.tg-link:hover .tg-icon {
-  transform: rotate(-8deg) scale(1.06);
-  background: var(--ink-3);
-}
+.tg-logo-box svg { width: 26px; height: 26px; display: block; }
 
-.tg-text {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  line-height: 1.3;
-}
-.tg-title {
-  font-size: 0.82rem;
-  font-weight: 700;
+.tg-id-box {
+  display: inline-flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: rgba(207, 226, 227, 0.28);
+  border: 1px solid rgba(145, 185, 194, 0.55);
   color: var(--ink-3);
-  letter-spacing: .01em;
-}
-.tg-sub {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--muted);
-  letter-spacing: .04em;
-  margin-top: 2px;
-}
-.tg-handle {
-  font-size: 0.66rem;
+  font-size: 0.92rem;
   font-weight: 700;
-  color: var(--accent);
-  letter-spacing: .06em;
-  margin-top: 3px;
-  font-variant-numeric: tabular-nums;
+  letter-spacing: .04em;
+  text-decoration: none;
+  transition: transform .4s var(--ease-spring), box-shadow .4s ease,
+              border-color .35s ease, background .35s ease;
 }
+.tg-id-box:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  background: rgba(207, 226, 227, 0.45);
+  box-shadow: 0 10px 26px rgba(16, 35, 50, 0.14);
+}
+.tg-id-box:active { transform: scale(.97); }
 
 /* ================= STATUS ================= */
 .status-line {
@@ -411,16 +391,31 @@ body {
   letter-spacing: .16em;
 }
 
+/* ================= RESISTOR WALKER ================= */
+#stage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2147483646;
+  pointer-events: none;
+  display: block;
+}
+@media (hover: none), (pointer: coarse) {
+  #stage { display: none !important; }
+  html, body, body * { cursor: auto !important; }
+}
+
 /* ================= RESPONSIVE ================= */
 @media (max-width: 560px) {
   .countdown-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
   .brand-row { flex-direction: column; gap: 10px; }
   .brand-text { text-align: center; }
   body { padding: 1.2rem 0.8rem; }
-  .tg-link { padding: 0.65rem 0.9rem; gap: 10px; }
-  .tg-title { font-size: 0.76rem; }
-  .tg-sub { font-size: 0.63rem; }
-  .tg-handle { font-size: 0.62rem; }
+  .tg-logo-box { width: 46px; height: 46px; border-radius: 10px; }
+  .tg-logo-box svg { width: 22px; height: 22px; }
+  .tg-id-box { height: 46px; padding: 0 16px; font-size: 0.84rem; border-radius: 10px; }
   .status-line { font-size: 0.62rem; padding: 5px 12px; }
   .card-footer { font-size: 0.6rem; letter-spacing: .1em; }
 }
@@ -436,10 +431,11 @@ body {
 </head>
 <body>
 
+<canvas id="stage"></canvas>
+
 <div class="countdown-card">
   <div class="card-inner">
 
-    <!-- ===== HEADER ===== -->
     <span class="eyebrow">Launch Countdown</span>
 
     <div class="brand-row">
@@ -459,10 +455,9 @@ body {
     <div class="headline">Something <span class="hl">electric</span> is coming</div>
     <p class="subline">
       ElectroPy goes live officially on <strong>Monday, November 9</strong> at
-      <strong>6:00 PM Iran Time</strong>. Visit <strong>@PAforge</strong> on Telegram. Until then, here's how long you have to wait.
+      <strong>6:00 PM Iran Time</strong>. Until then, here's how long you have to wait.
     </p>
 
-    <!-- ===== COUNTDOWN ===== -->
     <div class="countdown-grid" id="countdown">
       <div class="time-box" id="box-days">
         <span class="time-value" id="days">00</span>
@@ -482,7 +477,6 @@ body {
       </div>
     </div>
 
-    <!-- ===== TARGET BAR ===== -->
     <div class="target-bar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
            stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -493,45 +487,41 @@ body {
       <span class="t-time">— 18:00 IRST (UTC+3:30)</span>
     </div>
 
-    <!-- ===== TELEGRAM ===== -->
     <div class="tg-divider"></div>
-    <a class="tg-link" href="https://t.me/PAforge" target="_blank" rel="noopener">
-      <span class="tg-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+    <div class="tg-row">
+      <span class="tg-logo-box">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M21.94 4.6 18.9 19.2c-.23 1.02-.84 1.27-1.7.79l-4.7-3.47-2.27 2.19c-.25.25-.46.46-.94.46l.33-4.78 8.7-7.86c.38-.34-.08-.53-.59-.19L6.98 12.9 2.32 11.44c-1.01-.32-1.03-1.01.21-1.5l18.1-6.98c.84-.31 1.58.2 1.31 1.64z"/>
         </svg>
       </span>
-      <span class="tg-text">
-        <span class="tg-title">Need more info?</span>
-        <span class="tg-sub">Join our Telegram channel → t.me/Paforge</span>
-        <span class="tg-handle">@paforge</span>
-      </span>
-    </a>
+      <a class="tg-id-box" href="https://t.me/PAforge" target="_blank" rel="noopener">
+        @PAforge
+      </a>
+    </div>
 
-    <!-- ===== STATUS ===== -->
     <div class="status-line">
       <span class="status-dot"></span>
       <span>Launch sequence active</span>
     </div>
 
-    <!-- ===== LAUNCHED STATE ===== -->
     <div class="launched" id="launched">
       <div class="launch-badge">● LIVE NOW</div>
       <h2>ElectroPy is live.</h2>
       <p>Head to the download section and grab the latest Windows build.</p>
     </div>
 
-    <!-- ===== FOOTER ===== -->
     <div class="card-footer">© PAforge · 2026</div>
 
   </div>
 </div>
 
 <script>
+/* ============================================================
+   1) COUNTDOWN
+   ============================================================ */
 (function () {
   'use strict';
 
-  // Target: Monday, November 9, 2026 — 18:00 Iran Time (UTC+3:30)
   var TARGET = new Date('2026-11-09T18:00:00+03:30').getTime();
 
   var el = {
@@ -556,7 +546,7 @@ body {
     if (prev[key] !== value) {
       prev[key] = value;
       box.classList.remove('tick');
-      void box.offsetWidth; // force reflow so animation restarts
+      void box.offsetWidth;
       box.classList.add('tick');
     }
   }
@@ -591,7 +581,129 @@ body {
   update();
   setInterval(update, 1000);
 })();
-</script>
 
-</body>
-</html>
+/* ============================================================
+   2) RESISTOR WALKER — glass body
+   Body + legs are drawn on the same canvas, so they never drift.
+   ============================================================ */
+(function () {
+  const canvas = document.getElementById('stage');
+  const ctx = canvas.getContext('2d');
+
+  let W, H;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  // ---- mouse tracking ----
+  const mouse = { x: W / 2, y: H / 2 };
+  function setMouse(x, y) {
+    mouse.x = x; mouse.y = y;
+  }
+  window.addEventListener('mousemove', (e) => setMouse(e.clientX, e.clientY));
+  window.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    if (t) setMouse(t.clientX, t.clientY);
+  }, { passive: true });
+
+  // ---- body ----
+  const body = { x: W / 2, y: H / 2, heading: 0 };
+  let distanceTraveled = 0;
+
+  const CAPSULE_HALF_LEN = 24;
+  const CAPSULE_RADIUS = 9;
+
+  // ---- legs ----
+  const LEG_UPPER = 12;
+  const LEG_LOWER = 13;
+  const ALONG_OFFSETS = [16, -1, -18];
+  const BASE_SIDE = CAPSULE_RADIUS * 0.95;
+  const STEP_FORWARD = 7;
+  const OUTWARD = 10;
+  const STEP_FREQ = 1 / 52;
+  const IDLE_CREEP = 0.10;
+
+  const legs = [];
+  ALONG_OFFSETS.forEach((along, segIndex) => {
+    [-1, 1].forEach((side) => {
+      const sideIndex = side === 1 ? 0 : 1;
+      const group = (segIndex + sideIndex) % 2;
+      legs.push({
+        along, side,
+        phaseOffset: group * 0.5,
+        state: 'stance',
+        footX: null, footY: null,
+        swingFromX: 0, swingFromY: 0, swingToX: 0, swingToY: 0
+      });
+    });
+  });
+
+  function capsulePath(x, y, w, h) {
+    const r = h / 2;
+    ctx.beginPath();
+    if (ctx.roundRect) {
+      ctx.roundRect(x, y, w, h, r);
+    } else {
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    }
+  }
+
+  function drawResistor(cx, cy, heading) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(heading);
+
+    // wire leads
+    ctx.strokeStyle = 'rgba(205, 205, 210, 0.75)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(-CAPSULE_HALF_LEN - 13, 0);
+    ctx.lineTo(-CAPSULE_HALF_LEN + 2, 0);
+    ctx.moveTo(CAPSULE_HALF_LEN - 2, 0);
+    ctx.lineTo(CAPSULE_HALF_LEN + 13, 0);
+    ctx.stroke();
+
+    const w = CAPSULE_HALF_LEN * 2, h = CAPSULE_RADIUS * 2;
+
+    // ---- glass body ----
+    // soft outer shadow so it still reads as a solid object
+    ctx.save();
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetY = 3;
+    capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
+    ctx.fillStyle = 'rgba(235, 245, 250, 0.10)';
+    ctx.fill();
+    ctx.restore();
+
+    // vertical gradient fill — glassier than a flat tint
+    ctx.save();
+    capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
+    const glassGrad = ctx.createLinearGradient(0, -CAPSULE_RADIUS, 0, CAPSULE_RADIUS);
+    glassGrad.addColorStop(0,   'rgba(255, 255, 255, 0.30)');
+    glassGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.08)');
+    glassGrad.addColorStop(1,   'rgba(180, 200, 210, 0.18)');
+    ctx.fillStyle = glassGrad;
+    ctx.fill();
+
+    // inner rim highlight
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.stroke();
+    ctx.restore();
+
+    // ---- colour bands (on top of the glass, as if printed inside it) ----
+    ctx.save();
+    capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
+    ctx.clip();
+    ctx.globalAlpha = 0.75;
+    const bandColors = ['#d9a441', '#4fd1a5', '#d9607a', '#d9a441'];
+    const bandWidth = CAPSULE_RADIUS
