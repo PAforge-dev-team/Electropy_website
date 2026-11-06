@@ -360,7 +360,7 @@ body {
   text-transform: uppercase;
 }
 
-/* ================= LAUNCHED STATE ================= */
+/* ================= LAUNCHED / MIGRATING STATE ================= */
 .launched {
   display: none;
   padding: 1rem 0 0.4rem;
@@ -372,23 +372,15 @@ body {
   color: var(--ink);
   letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
+  animation: migratePulse 1.8s ease-in-out infinite;
+}
+@keyframes migratePulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
 }
 .launched p {
   color: var(--muted);
   font-size: 0.9rem;
-}
-.launched .launch-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 1rem;
-  padding: 6px 14px;
-  background: var(--accent-2);
-  color: var(--ink);
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .16em;
 }
 
 /* ================= RESISTOR WALKER ================= */
@@ -505,9 +497,8 @@ body {
     </div>
 
     <div class="launched" id="launched">
-      <div class="launch-badge">● LIVE NOW</div>
-      <h2>ElectroPy is live.</h2>
-      <p>Head to the download section and grab the latest Windows build.</p>
+      <h2>Migrating…</h2>
+      <p>We're moving things over. Please check back shortly.</p>
     </div>
 
     <div class="card-footer">© PAforge · 2026</div>
@@ -674,7 +665,6 @@ body {
     const w = CAPSULE_HALF_LEN * 2, h = CAPSULE_RADIUS * 2;
 
     // ---- glass body ----
-    // soft outer shadow so it still reads as a solid object
     ctx.save();
     ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
     ctx.shadowBlur = 10;
@@ -706,4 +696,8 @@ body {
     ctx.clip();
     ctx.globalAlpha = 0.75;
     const bandColors = ['#d9a441', '#4fd1a5', '#d9607a', '#d9a441'];
-    const bandWidth = CAPSULE_RADIUS
+    const bandWidth = CAPSULE_RADIUS * 0.42;
+    const bandPositions = [-CAPSULE_HALF_LEN * 0.52, -CAPSULE_HALF_LEN * 0.12, CAPSULE_HALF_LEN * 0.28, CAPSULE_HALF_LEN * 0.60];
+    bandPositions.forEach((px, i) => {
+      ctx.fillStyle = bandColors[i % bandColors.length];
+      ctx.fil
