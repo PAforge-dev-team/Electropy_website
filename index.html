@@ -3,7 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>ElectroPy — Launching Soon</title>
+
+<!-- ================= SEO ================= -->
+<title>ElectroPy — Launching Soon | ئێلێکترۆپای | الکتروپای</title>
+<meta name="description" content="ElectroPy (ئێلێکترۆپای / الکتروپای) — a new software tool by PAforge (پافورج / پافۆرج). Official launch: Monday, November 9, 2026 at 18:00 IRST.">
+<meta name="keywords" content="ElectroPy, ئێلێکترۆپای, الکتروپای, PAforge, پافورج, پافۆرج, PaForge Development Team, software launch, Windows app, electrical engineering software, ایران, کوردستان">
+<meta name="author" content="PAforge Development Team">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta name="theme-color" content="#0b1b2a">
+
+<!-- Canonical + hreflang -->
+<link rel="canonical" href="https://electropy.paforge.dev/">
+<link rel="alternate" hreflang="en" href="https://electropy.paforge.dev/">
+<link rel="alternate" hreflang="fa" href="https://electropy.paforge.dev/fa/">
+<link rel="alternate" hreflang="ckb" href="https://electropy.paforge.dev/ckb/">
+<link rel="alternate" hreflang="x-default" href="https://electropy.paforge.dev/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="ElectroPy">
+<meta property="og:title" content="ElectroPy — Launching Soon">
+<meta property="og:description" content="Something electric is coming. ElectroPy by PAforge launches Nov 9, 2026 at 18:00 IRST.">
+<meta property="og:url" content="https://electropy.paforge.dev/">
+<meta property="og:image" content="https://electropy.paforge.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fa_IR">
+<meta property="og:locale:alternate" content="ckb_IQ">
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="ElectroPy — Launching Soon">
+<meta name="twitter:description" content="ElectroPy by PAforge launches Nov 9, 2026 at 18:00 IRST.">
+<meta name="twitter:image" content="https://electropy.paforge.dev/og-image.png">
+<meta name="twitter:site" content="@PAforge">
+
+<!-- Apple -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ElectroPy">
+
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://paforge.dev/#organization",
+      "name": "PAforge Development Team",
+      "alternateName": ["پافورج", "پافۆرج", "PAforge"],
+      "url": "https://paforge.dev/",
+      "sameAs": ["https://t.me/PAforge"]
+    },
+    {
+      "@type": "SoftwareApplication",
+      "@id": "https://electropy.paforge.dev/#software",
+      "name": "ElectroPy",
+      "alternateName": ["ئێلێکترۆپای", "الکتروپای"],
+      "applicationCategory": "EngineeringApplication",
+      "operatingSystem": "Windows",
+      "description": "ElectroPy is an upcoming software tool by PAforge for electrical engineering workflows.",
+      "url": "https://electropy.paforge.dev/",
+      "publisher": { "@id": "https://paforge.dev/#organization" },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/PreOrder",
+        "availabilityStarts": "2026-11-09T18:00:00+03:30"
+      }
+    }
+  ]
+}
+</script>
+
 <style>
 /* ============================================================
    ELECTROPY COUNTDOWN — refined to match site theme
@@ -583,8 +658,8 @@ body {
 })();
 
 /* ============================================================
-   2) RESISTOR WALKER — glass body
-   Body + legs are drawn on the same canvas, so they never drift.
+   2) RESISTOR WALKER — refined
+   Smaller, crisper, more natural motion.
    ============================================================ */
 (function () {
   const canvas = document.getElementById('stage');
@@ -598,7 +673,7 @@ body {
   window.addEventListener('resize', resize);
   resize();
 
-  // ---- mouse tracking ----
+  // ---- mouse tracking (with velocity) ----
   const mouse = { x: W / 2, y: H / 2 };
   function setMouse(x, y) {
     mouse.x = x; mouse.y = y;
@@ -613,18 +688,19 @@ body {
   const body = { x: W / 2, y: H / 2, heading: 0 };
   let distanceTraveled = 0;
 
-  const CAPSULE_HALF_LEN = 24;
-  const CAPSULE_RADIUS = 9;
+  // ---- sizes (smaller + crisper) ----
+  const CAPSULE_HALF_LEN = 18;   // was 24
+  const CAPSULE_RADIUS   = 7;    // was 9
 
   // ---- legs ----
-  const LEG_UPPER = 12;
-  const LEG_LOWER = 13;
-  const ALONG_OFFSETS = [16, -1, -18];
-  const BASE_SIDE = CAPSULE_RADIUS * 0.95;
-  const STEP_FORWARD = 7;
-  const OUTWARD = 10;
-  const STEP_FREQ = 1 / 52;
-  const IDLE_CREEP = 0.10;
+  const LEG_UPPER = 9;
+  const LEG_LOWER = 10;
+  const ALONG_OFFSETS = [13, 0, -13];
+  const BASE_SIDE = CAPSULE_RADIUS * 0.9;
+  const STEP_FORWARD = 5;
+  const OUTWARD = 7.5;
+  const STEP_FREQ = 1 / 46;
+  const IDLE_CREEP = 0.12;
 
   const legs = [];
   ALONG_OFFSETS.forEach((along, segIndex) => {
@@ -636,7 +712,9 @@ body {
         phaseOffset: group * 0.5,
         state: 'stance',
         footX: null, footY: null,
-        swingFromX: 0, swingFromY: 0, swingToX: 0, swingToY: 0
+        swingFromX: 0, swingFromY: 0, swingToX: 0, swingToY: 0,
+        // per-leg vertical lift during swing (for an arc)
+        liftX: 0, liftY: 0
       });
     });
   });
@@ -661,57 +739,81 @@ body {
     ctx.translate(cx, cy);
     ctx.rotate(heading);
 
-    // wire leads
-    ctx.strokeStyle = 'rgba(205, 205, 210, 0.75)';
-    ctx.lineWidth = 2;
+    // ---- wire leads (silver, with a subtle inner groove) ----
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'rgba(190, 198, 205, 0.85)';
+    ctx.lineWidth = 1.8;
     ctx.beginPath();
-    ctx.moveTo(-CAPSULE_HALF_LEN - 13, 0);
-    ctx.lineTo(-CAPSULE_HALF_LEN + 2, 0);
-    ctx.moveTo(CAPSULE_HALF_LEN - 2, 0);
-    ctx.lineTo(CAPSULE_HALF_LEN + 13, 0);
+    ctx.moveTo(-CAPSULE_HALF_LEN - 11, 0);
+    ctx.lineTo(-CAPSULE_HALF_LEN + 1, 0);
+    ctx.moveTo(CAPSULE_HALF_LEN - 1, 0);
+    ctx.lineTo(CAPSULE_HALF_LEN + 11, 0);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.lineWidth = 0.6;
+    ctx.beginPath();
+    ctx.moveTo(-CAPSULE_HALF_LEN - 11, -0.4);
+    ctx.lineTo(-CAPSULE_HALF_LEN + 1, -0.4);
+    ctx.moveTo(CAPSULE_HALF_LEN - 1, -0.4);
+    ctx.lineTo(CAPSULE_HALF_LEN + 11, -0.4);
     ctx.stroke();
 
     const w = CAPSULE_HALF_LEN * 2, h = CAPSULE_RADIUS * 2;
 
-    // ---- glass body ----
-    // soft outer shadow so it still reads as a solid object
+    // ---- soft drop shadow ----
     ctx.save();
-    ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
-    ctx.shadowBlur = 10;
-    ctx.shadowOffsetY = 3;
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.30)';
+    ctx.shadowBlur = 9;
+    ctx.shadowOffsetY = 2.5;
     capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
-    ctx.fillStyle = 'rgba(235, 245, 250, 0.10)';
+    ctx.fillStyle = 'rgba(235, 245, 250, 0.08)';
     ctx.fill();
     ctx.restore();
 
-    // vertical gradient fill — glassier than a flat tint
+    // ---- glass body (vertical gradient) ----
     ctx.save();
     capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
     const glassGrad = ctx.createLinearGradient(0, -CAPSULE_RADIUS, 0, CAPSULE_RADIUS);
-    glassGrad.addColorStop(0,   'rgba(255, 255, 255, 0.30)');
-    glassGrad.addColorStop(0.5, 'rgba(255, 255, 255, 0.08)');
-    glassGrad.addColorStop(1,   'rgba(180, 200, 210, 0.18)');
+    glassGrad.addColorStop(0,    'rgba(255, 255, 255, 0.34)');
+    glassGrad.addColorStop(0.45, 'rgba(255, 255, 255, 0.10)');
+    glassGrad.addColorStop(1,    'rgba(176, 198, 210, 0.22)');
     ctx.fillStyle = glassGrad;
     ctx.fill();
 
-    // inner rim highlight
+    // inner rim
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.60)';
     ctx.stroke();
     ctx.restore();
 
-    // ---- colour bands (on top of the glass, as if printed inside it) ----
+    // ---- colour bands ----
     ctx.save();
     capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
     ctx.clip();
-    ctx.globalAlpha = 0.75;
     const bandColors = ['#d9a441', '#4fd1a5', '#d9607a', '#d9a441'];
-    const bandWidth = CAPSULE_RADIUS * 0.42;
-    const bandPositions = [-CAPSULE_HALF_LEN * 0.52, -CAPSULE_HALF_LEN * 0.12, CAPSULE_HALF_LEN * 0.28, CAPSULE_HALF_LEN * 0.60];
-    bandPositions.forEach((px, i) => {
+    const bandWidth  = CAPSULE_RADIUS * 0.55;
+    const bandPos    = [
+      -CAPSULE_HALF_LEN * 0.55,
+      -CAPSULE_HALF_LEN * 0.15,
+       CAPSULE_HALF_LEN * 0.25,
+       CAPSULE_HALF_LEN * 0.58
+    ];
+    // darker base so bands read crisply
+    ctx.globalAlpha = 0.82;
+    bandPos.forEach((px, i) => {
       ctx.fillStyle = bandColors[i % bandColors.length];
       ctx.fillRect(px - bandWidth / 2, -CAPSULE_RADIUS, bandWidth, h);
     });
+    ctx.globalAlpha = 1;
+
+    // inner shading at top & bottom edges (gives cylindrical feel)
+    const edgeShade = ctx.createLinearGradient(0, -CAPSULE_RADIUS, 0, CAPSULE_RADIUS);
+    edgeShade.addColorStop(0,    'rgba(0, 0, 0, 0.18)');
+    edgeShade.addColorStop(0.22, 'rgba(0, 0, 0, 0)');
+    edgeShade.addColorStop(0.78, 'rgba(0, 0, 0, 0)');
+    edgeShade.addColorStop(1,    'rgba(0, 0, 0, 0.22)');
+    ctx.fillStyle = edgeShade;
+    ctx.fillRect(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
     ctx.restore();
 
     // ---- top glossy highlight ----
@@ -719,15 +821,19 @@ body {
     capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
     ctx.clip();
     ctx.beginPath();
-    ctx.ellipse(0, -CAPSULE_RADIUS * 0.45, CAPSULE_HALF_LEN * 0.85, CAPSULE_RADIUS * 0.28, 0, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.32)';
+    ctx.ellipse(
+      0, -CAPSULE_RADIUS * 0.42,
+      CAPSULE_HALF_LEN * 0.82, CAPSULE_RADIUS * 0.24,
+      0, 0, Math.PI * 2
+    );
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.38)';
     ctx.fill();
     ctx.restore();
 
-    // ---- thin outer outline to keep the edge crisp ----
+    // ---- crisp outer outline ----
     capsulePath(-CAPSULE_HALF_LEN, -CAPSULE_RADIUS, w, h);
     ctx.lineWidth = 1;
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.32)';
     ctx.stroke();
 
     ctx.restore();
@@ -739,10 +845,10 @@ body {
     const maxReach = l1 + l2 - 0.5;
     if (d > maxReach) { dx = (dx / d) * maxReach; dy = (dy / d) * maxReach; d = maxReach; }
     const a = Math.min(l1, Math.max(-l2, (l1 * l1 - l2 * l2 + d * d) / (2 * d)));
-    const h = Math.sqrt(Math.max(0, l1 * l1 - a * a)) * bendScale;
+    const hh = Math.sqrt(Math.max(0, l1 * l1 - a * a)) * bendScale;
     const mx = bx + (dx / d) * a, my = by + (dy / d) * a;
     const px = -dy / d, py = dx / d;
-    return { kx: mx + px * h * bendSign, ky: my + py * h * bendSign, fx: bx + dx, fy: by + dy };
+    return { kx: mx + px * hh * bendSign, ky: my + py * hh * bendSign, fx: bx + dx, fy: by + dy };
   }
 
   function lerp(a, b, t) { return a + (b - a) * t; }
@@ -751,7 +857,8 @@ body {
   let lastX = body.x, lastY = body.y;
 
   function animate() {
-    const ease = 0.15;
+    // smoother follow for more natural gliding
+    const ease = 0.14;
     body.x += (mouse.x - body.x) * ease;
     body.y += (mouse.y - body.y) * ease;
 
@@ -763,7 +870,7 @@ body {
       const targetHeading = Math.atan2(dy, dx);
       let diff = targetHeading - body.heading;
       diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-      body.heading += diff * 0.16;
+      body.heading += diff * 0.20;
     }
 
     distanceTraveled += speed + IDLE_CREEP;
@@ -794,18 +901,33 @@ body {
       if (!isSwing) leg.state = 'stance';
 
       if (leg.state === 'swing') {
+        // ease-in-out along the ground path
         const p = smoothstep((t - 0.5) * 2);
         leg.swingToX = landX; leg.swingToY = landY;
         leg.footX = lerp(leg.swingFromX, leg.swingToX, p);
         leg.footY = lerp(leg.swingFromY, leg.swingToY, p);
+
+        // arc: lift foot perpendicular to travel direction
+        const arc = Math.sin(Math.PI * p) * 5.5;
+        leg.liftX = nx * arc * leg.side;
+        leg.liftY = ny * arc * leg.side;
+      } else {
+        leg.liftX *= 0.6;
+        leg.liftY *= 0.6;
       }
 
-      const bendScale = leg.state === 'swing' ? 1.35 : 0.75;
-      const bend = twoBoneIK(baseX, baseY, leg.footX, leg.footY, LEG_UPPER, LEG_LOWER, leg.side, bendScale);
+      const footDrawX = leg.footX + leg.liftX;
+      const footDrawY = leg.footY + leg.liftY;
 
-      const alpha = leg.state === 'swing' ? 0.85 : 0.42;
+      const bendScale = leg.state === 'swing' ? 1.25 : 0.70;
+      const bend = twoBoneIK(
+        baseX, baseY, footDrawX, footDrawY,
+        LEG_UPPER, LEG_LOWER, leg.side, bendScale
+      );
+
+      const alpha = leg.state === 'swing' ? 0.90 : 0.40;
       ctx.strokeStyle = `rgba(120, 220, 190, ${alpha})`;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.4;
       ctx.beginPath();
       ctx.moveTo(baseX, baseY);
       ctx.lineTo(bend.kx, bend.ky);
@@ -814,8 +936,8 @@ body {
 
       if (leg.state === 'stance') {
         ctx.beginPath();
-        ctx.arc(leg.footX, leg.footY, 1.6, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(120, 220, 190, 0.5)';
+        ctx.arc(leg.footX, leg.footY, 1.4, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(120, 220, 190, 0.45)';
         ctx.fill();
       }
     });
