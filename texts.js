@@ -74,7 +74,7 @@ window.TEXTS = {
   download_card_title: "ElectroPy for Windows",
   download_card_meta: "Windows • Desktop electronics software",
   download_card_btn: "Download",
-  download_footer: "Open extensions from the hamburger menu • EN / KU",
+  download_footer: "Open extensions from the hamburger menu • Electropy is ready...",
 
   footer_brand: "ElectroPy",
   footer_team: "PAforge Development Team",
