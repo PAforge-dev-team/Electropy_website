@@ -1,0 +1,6 @@
+# ElectroPy — https://electropy.paforge.ir/
+User-agent: *
+Allow: /
+Disallow: /tools/
+
+Sitemap: https://electropy.paforge.ir/sitemap.xml

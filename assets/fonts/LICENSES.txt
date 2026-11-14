@@ -1,0 +1,14 @@
+The web fonts embedded in assets/css/fonts.css and assets/css/fonts-rtl.css
+are open-source fonts licensed under the SIL Open Font License, Version 1.1
+(https://openfontlicense.org):
+
+  Outfit             Copyright 2021 The Outfit Project Authors
+                     https://github.com/Outfitio/Outfit-Fonts
+  Nunito             Copyright 2014 The Nunito Project Authors
+                     https://github.com/googlefonts/nunito
+  Noto Kufi Arabic   Copyright 2022 The Noto Project Authors
+                     https://github.com/notofonts/arabic
+  Vazirmatn (Round-Dots)  Copyright 2015 The Vazirmatn Project Authors
+                     https://github.com/rastikerdar/vazirmatn
+
+Only the character ranges used by the site are included (subsets).
