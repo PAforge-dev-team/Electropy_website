@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ElectroPy — Electronics Design Software</title>
+<meta name="description" content="ElectroPy is a free Windows toolkit for electronics design. Visually find series and parallel resistor and capacitor combinations for any target value.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://electropy.paforge.ir/">
+<style>
+  :root {
+    --paper: #eee9df;
+    --ink: #0b1b2a;
+    --ink-2: #102332;
+    --accent: #91b9c2;
+    --accent-2: #cfe2e3;
+    --font-display: 'Outfit', 'Segoe UI', Arial, sans-serif;
+    --font-body: 'Nunito', 'Segoe UI', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    overflow-x: hidden;
+  }
+  .card {
+    max-width: 580px;
+    width: 100%;
+    text-align: center;
+    background: #fff;
+    border: 1px solid rgba(11,27,42,0.1);
+    border-radius: 18px;
+    padding: 48px 32px;
+    box-shadow: 0 20px 50px rgba(11,27,42,0.08);
+  }
+  .logo {
+    width: 48px; height: 48px; margin: 0 auto 18px;
+  }
+  h1 {
+    margin: 0 0 14px;
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  p {
+    line-height: 1.75;
+    color: var(--ink-2);
+    opacity: 0.85;
+  }
+  .btn {
+    display: inline-block;
+    margin-top: 22px;
+    padding: 14px 34px;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    border-radius: 999px;
+    font-family: var(--font-display);
+    font-weight: 600;
+    transition: background .2s ease;
+  }
+  .btn:hover { background: var(--ink-2); }
+  .notice {
+    margin-top: 30px;
+    font-size: 0.85rem;
+    color: var(--ink-2);
+    opacity: 0.6;
+    border-top: 1px solid rgba(11,27,42,0.1);
+    padding-top: 18px;
+  }
+
+  /* ================= RESISTOR CURSOR ================= */
+  .resistor-shadow {
+    position: fixed; left: 0; top: 0; direction: ltr;
+    width: 32px; height: 11px; border-radius: 999px;
+    transform-origin: center center;
+    z-index: 99997; pointer-events: none;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.25) 45%, rgba(0,0,0,0) 75%);
+    filter: blur(3px);
+    opacity: 0; transition: opacity .5s ease;
+    will-change: transform;
+  }
+  .resistor-body {
+    position: fixed; left: 0; top: 0; direction: ltr;
+    width: 38px; height: 15px; border-radius: 999px;
+    transform-origin: center center;
+    z-index: 99998; pointer-events: none;
+    background:
+      linear-gradient(90deg,
+        transparent 0%, transparent 10%,
+        rgba(139,69,19,0.95) 10%, rgba(139,69,19,0.95) 19%,
+        transparent 19%, transparent 35%,
+        rgba(20,20,20,0.95) 35%, rgba(20,20,20,0.95) 44%,
+        transparent 44%, transparent 60%,
+        rgba(200,30,30,0.95) 60%, rgba(200,30,30,0.95) 69%,
+        transparent 69%, transparent 81%,
+        rgba(212,175,55,0.95) 81%, rgba(212,175,55,0.95) 90%,
+        transparent 90%, transparent 100%),
+      linear-gradient(180deg, rgba(255,255,255,0.22), rgba(255,255,255,0.03) 45%, rgba(0,0,0,0.12) 100%),
+      rgba(255,255,255,0.10);
+    border: 1.5px solid rgba(255,255,255,0.45);
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,0.5),
+      inset 0 -2px 6px rgba(0,0,0,0.25),
+      0 0 14px rgba(145,185,194,0.35),
+      0 6px 20px rgba(0,0,0,0.18);
+    backdrop-filter: blur(10px) saturate(160%);
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    opacity: 0; transition: opacity .5s ease;
+    will-change: transform;
+  }
+  .resistor-body.active, .resistor-shadow.active { opacity: 1; }
+  .cursor-stage {
+    position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    direction: ltr; z-index: 99996;
+    pointer-events: none; opacity: 0; transition: opacity .5s ease;
+    will-change: opacity;
+  }
+  .cursor-stage.active { opacity: 1; }
+  @media (hover: none), (pointer: coarse) {
+    .cursor-stage, .resistor-body, .resistor-shadow { display: none !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <svg class="logo" viewBox="0 0 42 42" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="0" width="42" height="42" rx="10" fill="#0b1b2a"/>
+      <path d="M11 25h20M11 19h14M11 13h8" stroke="#9fc5d0" stroke-width="3" stroke-linecap="square" fill="none"/>
+    </svg>
+    <h1>ElectroPy</h1>
+    <p>
+      ElectroPy is a free Windows toolkit for electronics design. Enter a target
+      resistance or capacitance and instantly see every matching series and
+      parallel combination of standard-value resistors and capacitors.
+    </p>
+    <a class="btn" href="https://github.com/PAforge-dev-team/Electropy/releases" target="_blank" rel="noopener">
+      Download ElectroPy
+    </a>
+    <p class="notice">
+      The full site is temporarily simplified while a few small issues are being fixed.
+    </p>
+  </div>
+
+  <canvas class="cursor-stage" id="resistorStage"></canvas>
+  <div class="resistor-shadow" id="resistorShadow"></div>
+  <div class="resistor-body" id="resistorBody"></div>
+
+  <script>
+  (function () {
+    var isTouchDevice = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    if (isTouchDevice) return;
+
+    var canvas = document.getElementById('resistorStage');
+    var ctx = canvas.getContext('2d');
+    var resistorEl = document.getElementById('resistorBody');
+    var shadowEl = document.getElementById('resistorShadow');
+
+    var W, H;
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    var mouse = { x: W / 2, y: H / 2 };
+
+    var IDLE_TIMEOUT = 3000;
+    var idleTimer = null;
+    var cursorVisible = false;
+
+    function showCursor() {
+      if (!cursorVisible) {
+        cursorVisible = true;
+        canvas.classList.add('active');
+        resistorEl.classList.add('active');
+        shadowEl.classList.add('active');
+      }
+      if (idleTimer) clearTimeout(idleTimer);
+      idleTimer = setTimeout(hideCursor, IDLE_TIMEOUT);
+    }
+    function hideCursor() {
+      cursorVisible = false;
+      canvas.classList.remove('active');
+      resistorEl.classList.remove('active');
+      shadowEl.classList.remove('active');
+    }
+
+    window.addEventListener('mousemove', function (e) {
+      mouse.x = e.clientX; mouse.y = e.clientY;
+      showCursor();
+    });
+    window.addEventListener('mousedown', showCursor);
+    window.addEventListener('scroll', showCursor, { passive: true });
+    window.addEventListener('wheel', showCursor, { passive: true });
+    window.addEventListener('keydown', showCursor);
+
+    var body = { x: W / 2, y: H / 2, heading: 0 };
+    var distanceTraveled = 0;
+
+    var CAPSULE_HALF_LEN = 18;
+    var LEG_UPPER = 11;
+    var LEG_LOWER = 12;
+    var ALONG_OFFSETS = [15, -1, -17];
+    var BASE_SIDE = 7.5 * 0.95;
+    var STEP_FORWARD = 6.5;
+    var OUTWARD = 9;
+    var STEP_FREQ = 1 / 52;
+    var IDLE_CREEP = 0.10;
+
+    var legs = [];
+    ALONG_OFFSETS.forEach(function (along, segIndex) {
+      [-1, 1].forEach(function (side) {
+        var sideIndex = side === 1 ? 0 : 1;
+        var group = (segIndex + sideIndex) % 2;
+        legs.push({
+          along: along, side: side,
+          phaseOffset: group * 0.5,
+          state: 'stance',
+          footX: null, footY: null,
+          swingFromX: 0, swingFromY: 0, swingToX: 0, swingToY: 0
+        });
+      });
+    });
+
+    function twoBoneIK(bx, by, fx, fy, l1, l2, bendSign, bendScale) {
+      var dx = fx - bx, dy = fy - by;
+      var d = Math.hypot(dx, dy) || 0.0001;
+      var maxReach = l1 + l2 - 0.5;
+      if (d > maxReach) { dx = (dx / d) * maxReach; dy = (dy / d) * maxReach; d = maxReach; }
+      var a = Math.min(l1, Math.max(-l2, (l1 * l1 - l2 * l2 + d * d) / (2 * d)));
+      var h = Math.sqrt(Math.max(0, l1 * l1 - a * a)) * bendScale;
+      var mx = bx + (dx / d) * a, my = by + (dy / d) * a;
+      var px = -dy / d, py = dx / d;
+      return { kx: mx + px * h * bendSign, ky: my + py * h * bendSign, fx: bx + dx, fy: by + dy };
+    }
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function smoothstep(t) { return t * t * (3 - 2 * t); }
+
+    var lastX = body.x, lastY = body.y;
+    var resistorHalfW = resistorEl.offsetWidth / 2;
+    var resistorHalfH = resistorEl.offsetHeight / 2;
+    var shadowHalfW = shadowEl.offsetWidth / 2;
+    var shadowHalfH = shadowEl.offsetHeight / 2;
+    var SHADOW_DROP = 6;
+
+    function animate() {
+      var ease = 0.15;
+      body.x += (mouse.x - body.x) * ease;
+      body.y += (mouse.y - body.y) * ease;
+
+      var dx = body.x - lastX, dy = body.y - lastY;
+      var speed = Math.hypot(dx, dy);
+      lastX = body.x; lastY = body.y;
+
+      if (speed > 0.05) {
+        var targetHeading = Math.atan2(dy, dx);
+        var diff = targetHeading - body.heading;
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+        body.heading += diff * 0.16;
+      }
+
+      distanceTraveled += speed + IDLE_CREEP;
+
+      var fx = Math.cos(body.heading), fy = Math.sin(body.heading);
+      var nx = -fy, ny = fx;
+
+      ctx.clearRect(0, 0, W, H);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.strokeStyle = 'rgba(16, 35, 50, 0.55)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(body.x - fx * (CAPSULE_HALF_LEN + 11), body.y - fy * (CAPSULE_HALF_LEN + 11));
+      ctx.lineTo(body.x - fx * (CAPSULE_HALF_LEN - 3), body.y - fy * (CAPSULE_HALF_LEN - 3));
+      ctx.moveTo(body.x + fx * (CAPSULE_HALF_LEN - 3), body.y + fy * (CAPSULE_HALF_LEN - 3));
+      ctx.lineTo(body.x + fx * (CAPSULE_HALF_LEN + 11), body.y + fy * (CAPSULE_HALF_LEN + 11));
+      ctx.stroke();
+
+      legs.forEach(function (leg) {
+        var baseX = body.x + fx * leg.along + nx * BASE_SIDE * leg.side;
+        var baseY = body.y + fy * leg.along + ny * BASE_SIDE * leg.side;
+        var landX = baseX + fx * STEP_FORWARD + nx * OUTWARD * leg.side;
+        var landY = baseY + fy * STEP_FORWARD + ny * OUTWARD * leg.side;
+
+        var t = (distanceTraveled * STEP_FREQ + leg.phaseOffset) % 1;
+        var isSwing = t >= 0.5;
+
+        if (leg.footX === null) { leg.footX = landX; leg.footY = landY; }
+
+        if (isSwing && leg.state !== 'swing') {
+          leg.state = 'swing';
+          leg.swingFromX = leg.footX; leg.swingFromY = leg.footY;
+        }
+        if (!isSwing) leg.state = 'stance';
+
+        if (leg.state === 'swing') {
+          var p = smoothstep((t - 0.5) * 2);
+          leg.swingToX = landX; leg.swingToY = landY;
+          leg.footX = lerp(leg.swingFromX, leg.swingToX, p);
+          leg.footY = lerp(leg.swingFromY, leg.swingToY, p);
+        }
+
+        var bendScale = leg.state === 'swing' ? 1.35 : 0.75;
+        var bend = twoBoneIK(baseX, baseY, leg.footX, leg.footY, LEG_UPPER, LEG_LOWER, leg.side, bendScale);
+
+        var alpha = leg.state === 'swing' ? 0.9 : 0.5;
+        ctx.strokeStyle = 'rgba(30, 110, 100, ' + alpha + ')';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        ctx.moveTo(baseX, baseY);
+        ctx.lineTo(bend.kx, bend.ky);
+        ctx.lineTo(bend.fx, bend.fy);
+        ctx.stroke();
+
+        if (leg.state === 'stance') {
+          ctx.beginPath();
+          ctx.arc(leg.footX, leg.footY, 1.8, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(30, 110, 100, 0.6)';
+          ctx.fill();
+        }
+      });
+
+      shadowEl.style.transform =
+        'translate(' + (body.x - shadowHalfW) + 'px, ' + (body.y + SHADOW_DROP - shadowHalfH) + 'px) rotate(' + body.heading + 'rad)';
+      resistorEl.style.transform =
+        'translate(' + (body.x - resistorHalfW) + 'px, ' + (body.y - resistorHalfH) + 'px) rotate(' + body.heading + 'rad)';
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+  </script>
+</body>
+</html>
