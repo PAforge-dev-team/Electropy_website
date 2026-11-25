@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://electropy.paforge.ir/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://electropy.paforge.ir/"/>
+    <xhtml:link rel="alternate" hreflang="ku" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="ckb" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://electropy.paforge.ir/fa/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://electropy.paforge.ir/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://electropy.paforge.ir/"/>
+    <image:image>
+      <image:loc>https://electropy.paforge.ir/assets/images/preview.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://electropy.paforge.ir/ku/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://electropy.paforge.ir/"/>
+    <xhtml:link rel="alternate" hreflang="ku" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="ckb" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://electropy.paforge.ir/fa/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://electropy.paforge.ir/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://electropy.paforge.ir/"/>
+    <image:image>
+      <image:loc>https://electropy.paforge.ir/assets/images/preview.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://electropy.paforge.ir/fa/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://electropy.paforge.ir/"/>
+    <xhtml:link rel="alternate" hreflang="ku" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="ckb" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://electropy.paforge.ir/fa/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://electropy.paforge.ir/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://electropy.paforge.ir/"/>
+    <image:image>
+      <image:loc>https://electropy.paforge.ir/assets/images/preview.webp</image:loc>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://electropy.paforge.ir/ar/</loc>
+    <lastmod>2026-11-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://electropy.paforge.ir/"/>
+    <xhtml:link rel="alternate" hreflang="ku" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="ckb" href="https://electropy.paforge.ir/ku/"/>
+    <xhtml:link rel="alternate" hreflang="fa" href="https://electropy.paforge.ir/fa/"/>
+    <xhtml:link rel="alternate" hreflang="ar" href="https://electropy.paforge.ir/ar/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://electropy.paforge.ir/"/>
+    <image:image>
+      <image:loc>https://electropy.paforge.ir/assets/images/preview.webp</image:loc>
+    </image:image>
+  </url>
+</urlset>
