@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://electropy.paforge.ir/sitemap.xml
