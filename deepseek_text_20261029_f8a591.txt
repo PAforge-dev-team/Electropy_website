@@ -1,0 +1,14 @@
+/
+├── index.html          ← کد بالا رو بذار
+├── texts.js            ← کد بالا رو بذار
+├── favicon.ico         ← از realfavicongenerator بگیر
+├── favicon.svg         ← خودت داری
+├── favicon-16x16.png   ← از realfavicongenerator بگیر
+├── favicon-32x32.png   ← از realfavicongenerator بگیر
+├── apple-touch-icon.png ← از realfavicongenerator بگیر
+├── .nojekyll           ← فایل خالی
+├── README.md
+│
+└── assets/
+    └── images/
+        └── preview.webp  ← عکست (۱۶۱۴×۹۹۰)
